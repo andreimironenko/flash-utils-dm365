@@ -1,0 +1,277 @@
+******************************************************************************
+                  TMS470 Linker PC v4.5.0                      
+******************************************************************************
+>> Linked Thu Jul 30 11:53:36 2009
+
+OUTPUT FILE NAME:   <C:/cat-git/trunk/DM35x_Rev_C/CCS/UBL/NAND/UBL_DM355_NAND_216.out>
+ENTRY POINT SYMBOL: "boot"  address: 00000100
+
+
+MEMORY CONFIGURATION
+
+         name            origin    length      used     unused   attr    fill
+----------------------  --------  ---------  --------  --------  ----  --------
+  ARM_I_IVT             00000000   00000020  00000000  00000020  R  X
+  UBL_I_SELFCOPY        00000020   000000e0  00000000  000000e0  R  X
+  UBL_I_TEXT            00000100   00004300  00002e74  0000148c  R  X
+  UBL_D_SELFCOPY        00010020   000000e0  00000000  000000e0  RW  
+  UBL_D_TEXT            00010100   00004300  00000000  00004300  RW  
+  UBL_D_DATA            00014400   00000400  0000017c  00000284  RW  
+  UBL_BSS               00014800   00000400  00000024  000003dc  RW  
+  UBL_STACK             00014c00   00000400  00000000  00000400  RW  
+  UBL_F_SELFCOPY        02000000   000000e0  00000068  00000078  R  X
+  UBL_F_TEXT            020000e0   00004300  00002e74  0000148c  R   
+  UBL_F_DATA            020043e0   00000400  0000017c  00000284  R   
+  UBL_DRAM              80000000   10000000  00000000  10000000  RW X
+
+
+SEGMENT ALLOCATION MAP
+
+run origin  load origin   length   init length attrs members
+----------  ----------- ---------- ----------- ----- -------
+00000100    020000e0    00002e74   00002e74    r-x
+  00000100    020000e0    00002e74   00002e74    r-x .text
+00014400    020043e0    0000017c   0000017c    r--
+  00014400    020043e0    0000017c   0000017c    r-- .data
+00014800    00014800    00000024   00000000    rw-
+  00014800    00014800    00000024   00000000    rw- .bss
+02000000    02000000    00000068   00000068    r-x
+  02000000    02000000    00000068   00000068    r-x .selfcopy
+
+
+SECTION ALLOCATION MAP
+
+ output                                  attributes/
+section   page    origin      length       input sections
+--------  ----  ----------  ----------   ----------------
+.bss       0    00014800    00000024     UNINITIALIZED
+                  00014800    00000018     NANDboot.obj (.bss)
+                  00014818    00000008     ubl.obj (.bss)
+                  00014820    00000004     util.obj (.bss)
+
+.selfcopy 
+*          0    02000000    00000068     
+                  02000000    00000068     selfcopy.obj (.selfcopy)
+
+.text      0    020000e0    00002e74     RUN ADDR = 00000100
+                  020000e0    00000050     boot.obj (.boot)
+                  02000130    000016d0     nand.obj (.text)
+                  02001800    000008e4     device.obj (.text)
+                  020020e4    000004c4     device_nand.obj (.text)
+                  020025a8    00000350     uart.obj (.text)
+                  020028f8    00000228     util.obj (.text)
+                  02002b20    0000020c     NANDboot.obj (.text)
+                  02002d2c    000001dc     ubl.obj (.text)
+                  02002f08    0000004b     debug.obj (.text)
+                  02002f53    00000001     --HOLE-- [fill = 000000ff]
+
+.data      0    020043e0    0000017c     RUN ADDR = 00014400
+                  020043e0    000000d8     device_nand.obj (.const:DEVICE_NAND_CHIP_infoTable)
+                  020044b8    00000048     device_nand.obj (.const:DEVICE_NAND_PAGE_layout)
+                  02004500    0000002c     device_nand.obj (.const)
+                  0200452c    00000024     device.obj (.const)
+                  02004550    00000006     device.obj (.const:.string)
+                  02004556    00000006     --HOLE-- [fill = 000000ff]
+
+.ddr_mem   0    80000000    10000000     DSECT
+                  80000000    10000000     --HOLE--
+
+
+GLOBAL SYMBOLS: SORTED ALPHABETICALLY BY Name 
+
+address    name
+--------   ----
+10000000   DDRSize
+80000000   DDRStart
+00002f50   DEBUG_printHexInt
+00002f48   DEBUG_printString
+00002f2c   DEBUG_readChar
+00002f28   DEBUG_readString
+00001ca8   DEVICE_DDR2Init
+00001d74   DEVICE_EMIFInit
+00001e38   DEVICE_I2C0Init
+00002000   DEVICE_I2C0Reset
+00001c30   DEVICE_LPSCTransition
+00014540   DEVICE_NAND_BB_info
+00014400   DEVICE_NAND_CHIP_infoTable
+00014520   DEVICE_NAND_ECC_info
+000144d8   DEVICE_NAND_PAGE_layout
+000019f8   DEVICE_PLL1Init
+00001b50   DEVICE_PLL2Init
+00001848   DEVICE_PSCInit
+00001e00   DEVICE_TIMER0Init
+00001fcc   DEVICE_TIMER0Start
+00001fbc   DEVICE_TIMER0Status
+00001f94   DEVICE_TIMER0Stop
+00001db0   DEVICE_UART0Init
+00001f80   DEVICE_bootMode
+00001f68   DEVICE_emifBusWidth
+00001e68   DEVICE_init
+00001820   DEVICE_pinmuxControl
+00008000   DRAMSize
+00010000   DRAMStart
+02000000   EMIFSize
+02000000   EMIFStart
+90000000   EXTERNAL_RAM_END
+80000000   EXTERNAL_RAM_START
+0000017c   FLASHDATASize
+020043e0   FLASHDATAStart
+00002e74   FLASHTEXTSize
+020000e0   FLASHTEXTStart
+00008000   IRAMSize
+00000000   IRAMStart
+00002b40   NANDBOOT_copy
+000016ac   NAND_badBlockCheck
+000014ac   NAND_badBlockMark
+00001618   NAND_eraseBlocks
+00001564   NAND_eraseBlocks_with_bb_check
+0000169c   NAND_globalErase
+00001608   NAND_globalErase_with_bb_check
+00001438   NAND_isWriteProtected
+0000134c   NAND_open
+00000ec4   NAND_protectBlocks
+00000b44   NAND_readPage
+00000a04   NAND_readSpareBytesOfPage
+00000eac   NAND_reset
+00000e24   NAND_unProtectBlocks
+00000d6c   NAND_verifyBlockErased
+00000cc8   NAND_verifyPage
+00000874   NAND_writeOnlySpareBytesOfPage
+00000634   NAND_writePage
+000003d4   NAND_writePage_ubl_header
+00018000   STACKStart
+00002880   UART_checkSequence
+00002784   UART_recvHexData
+00002768   UART_recvString
+000026c8   UART_recvStringN
+00002680   UART_sendHexInt
+000025fc   UART_sendString
+00002948   UTIL_allocMem
+00002ac8   UTIL_buildCRC16Table
+00002a70   UTIL_buildCRC32Table
+000029f0   UTIL_calcCRC16
+000029b4   UTIL_calcCRC32
+00002988   UTIL_callocMem
+0000293c   UTIL_getCurrMemPtr
+00002930   UTIL_setCurrMemPtr
+00002918   UTIL_waitLoop
+00002918   UTIL_waitLoopAccurate
+00000100   __TI_static_base__
+ffffffff   __binit__
+ffffffff   __c_args__
+00010020   __selfcopydest
+02000000   __selfcopysrc
+0200455c   __selfcopysrcend
+02000050   _dramstart
+0200005c   _selfcopydest
+02000058   _selfcopysrc
+02000060   _selfcopysrcend
+00000148   _stack
+ffffffff   binit
+00000100   boot
+0001456c   devString
+0001481c   gEntryPoint
+00014800   gNandBoot
+00002e0c   main
+02000000   selfcopy
+
+
+GLOBAL SYMBOLS: SORTED BY Symbol Address 
+
+address    name
+--------   ----
+00000000   IRAMStart
+00000100   __TI_static_base__
+00000100   boot
+00000148   _stack
+0000017c   FLASHDATASize
+000003d4   NAND_writePage_ubl_header
+00000634   NAND_writePage
+00000874   NAND_writeOnlySpareBytesOfPage
+00000a04   NAND_readSpareBytesOfPage
+00000b44   NAND_readPage
+00000cc8   NAND_verifyPage
+00000d6c   NAND_verifyBlockErased
+00000e24   NAND_unProtectBlocks
+00000eac   NAND_reset
+00000ec4   NAND_protectBlocks
+0000134c   NAND_open
+00001438   NAND_isWriteProtected
+000014ac   NAND_badBlockMark
+00001564   NAND_eraseBlocks_with_bb_check
+00001608   NAND_globalErase_with_bb_check
+00001618   NAND_eraseBlocks
+0000169c   NAND_globalErase
+000016ac   NAND_badBlockCheck
+00001820   DEVICE_pinmuxControl
+00001848   DEVICE_PSCInit
+000019f8   DEVICE_PLL1Init
+00001b50   DEVICE_PLL2Init
+00001c30   DEVICE_LPSCTransition
+00001ca8   DEVICE_DDR2Init
+00001d74   DEVICE_EMIFInit
+00001db0   DEVICE_UART0Init
+00001e00   DEVICE_TIMER0Init
+00001e38   DEVICE_I2C0Init
+00001e68   DEVICE_init
+00001f68   DEVICE_emifBusWidth
+00001f80   DEVICE_bootMode
+00001f94   DEVICE_TIMER0Stop
+00001fbc   DEVICE_TIMER0Status
+00001fcc   DEVICE_TIMER0Start
+00002000   DEVICE_I2C0Reset
+000025fc   UART_sendString
+00002680   UART_sendHexInt
+000026c8   UART_recvStringN
+00002768   UART_recvString
+00002784   UART_recvHexData
+00002880   UART_checkSequence
+00002918   UTIL_waitLoop
+00002918   UTIL_waitLoopAccurate
+00002930   UTIL_setCurrMemPtr
+0000293c   UTIL_getCurrMemPtr
+00002948   UTIL_allocMem
+00002988   UTIL_callocMem
+000029b4   UTIL_calcCRC32
+000029f0   UTIL_calcCRC16
+00002a70   UTIL_buildCRC32Table
+00002ac8   UTIL_buildCRC16Table
+00002b40   NANDBOOT_copy
+00002e0c   main
+00002e74   FLASHTEXTSize
+00002f28   DEBUG_readString
+00002f2c   DEBUG_readChar
+00002f48   DEBUG_printString
+00002f50   DEBUG_printHexInt
+00008000   DRAMSize
+00008000   IRAMSize
+00010000   DRAMStart
+00010020   __selfcopydest
+00014400   DEVICE_NAND_CHIP_infoTable
+000144d8   DEVICE_NAND_PAGE_layout
+00014520   DEVICE_NAND_ECC_info
+00014540   DEVICE_NAND_BB_info
+0001456c   devString
+00014800   gNandBoot
+0001481c   gEntryPoint
+00018000   STACKStart
+02000000   EMIFSize
+02000000   EMIFStart
+02000000   __selfcopysrc
+02000000   selfcopy
+02000050   _dramstart
+02000058   _selfcopysrc
+0200005c   _selfcopydest
+02000060   _selfcopysrcend
+020000e0   FLASHTEXTStart
+020043e0   FLASHDATAStart
+0200455c   __selfcopysrcend
+10000000   DDRSize
+80000000   DDRStart
+80000000   EXTERNAL_RAM_START
+90000000   EXTERNAL_RAM_END
+ffffffff   __binit__
+ffffffff   __c_args__
+ffffffff   binit
+
+[93 symbols]

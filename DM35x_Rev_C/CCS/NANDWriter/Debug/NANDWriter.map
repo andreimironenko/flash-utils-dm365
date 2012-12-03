@@ -1,0 +1,555 @@
+******************************************************************************
+                  TMS470 Linker PC v4.5.0                      
+******************************************************************************
+>> Linked Thu Jul 30 11:53:00 2009
+
+OUTPUT FILE NAME:   <./Debug/NANDWriter_DM35x_STANDARD.out>
+ENTRY POINT SYMBOL: "_c_int00"  address: 8e0097a0
+
+
+MEMORY CONFIGURATION
+
+         name            origin    length      used     unused   attr    fill
+----------------------  --------  ---------  --------  --------  ----  --------
+  AEMIF                 02000000   01000000  00000000  01000000  RWIX
+  DRAM                  80000000   0e000000  00000000  0e000000  RWIX
+  DRAM_PROG             8e000000   01000000  0001a1c8  00fe5e38  RWIX
+
+
+SEGMENT ALLOCATION MAP
+
+run origin  load origin   length   init length attrs members
+----------  ----------- ---------- ----------- ----- -------
+8e000000    8e000000    00009988   00009988    r-x
+  8e000000    8e000000    00009988   00009988    r-x .text
+8e009988    8e009988    00010000   00000000    rw-
+  8e009988    8e009988    00008000   00000000    rw- .stack
+  8e011988    8e011988    00008000   00000000    rw- .sysmem
+8e019988    8e019988    000003b0   000003b0    r--
+  8e019988    8e019988    000003b0   000003b0    r-- .const
+8e019d38    8e019d38    0000029c   00000000    rw-
+  8e019d38    8e019d38    0000029c   00000000    rw- .bss
+8e019fd4    8e019fd4    000001f4   000001f4    rw-
+  8e019fd4    8e019fd4    000001f4   000001f4    rw- .data
+
+
+SECTION ALLOCATION MAP
+
+ output                                  attributes/
+section   page    origin      length       input sections
+--------  ----  ----------  ----------   ----------------
+.cinit     0    8e000000    00000000     UNINITIALIZED
+
+.aemif_mem 
+*          0    02000000    00000000     UNINITIALIZED
+
+.ddr_mem   0    80000000    0e000000     DSECT
+                  80000000    0e000000     --HOLE--
+
+.text      0    8e000000    00009988     
+                  8e000000    00002428     nand.obj (.text)
+                  8e002428    00000ea0     rtsv4_T_le_eabi.lib : _printfi.obj (.text)
+                  8e0032c8    00000e1c     nandwriter.obj (.text)
+                  8e0040e4    00000d80     device.obj (.text)
+                  8e004e64    000009fc     rtsv4_T_le_eabi.lib : _scanfi.obj (.text)
+                  8e005860    00000858     device_nand.obj (.text)
+                  8e0060b8    0000050c     util.obj (.text)
+                  8e0065c4    000004dc     rtsv4_T_le_eabi.lib : memory.obj (.text)
+                  8e006aa0    00000490                         : lowlev.obj (.text)
+                  8e006f30    000003bc                         : trgdrv.obj (.text)
+                  8e0072ec    000002c0                         : ull_div32.obj (.text)
+                  8e0075ac    00000264     debug.obj (.text)
+                  8e007810    0000023c     rtsv4_T_le_eabi.lib : strtod.obj (.text)
+                  8e007a4c    00000230                         : strtold.obj (.text)
+                  8e007c7c    00000218                         : fopen.obj (.text)
+                  8e007e94    000001f0                         : strtoll.obj (.text)
+                  8e008084    00000170                         : strtoull.obj (.text)
+                  8e0081f4    00000154                         : fd_add16.obj (.text)
+                  8e008348    00000154                         : strtol.obj (.text)
+                  8e00849c    0000013c                         : fscanf.obj (.text)
+                  8e0085d8    0000012c                         : strtoul.obj (.text)
+                  8e008704    00000118                         : i_div32.obj (.text)
+                  8e00881c    0000010c                         : fd_div16.obj (.text)
+                  8e008928    0000010c                         : fputs.obj (.text)
+                  8e008a34    000000f4                         : u_div32.obj (.text)
+                  8e008b28    000000ea                         : fd_mul16.obj (.text)
+                  8e008c12    00000002     --HOLE-- [fill = 0]
+                  8e008c14    000000dc                         : fread.obj (.text)
+                  8e008cf0    000000d4                         : fd_cmp32.obj (.text)
+                  8e008dc4    000000bc                         : fflush.obj (.text)
+                  8e008e80    000000b8                         : _io_perm.obj (.text)
+                  8e008f38    000000b0                         : setvbuf.obj (.text)
+                  8e008fe8    0000009c                         : auto_init.obj (.text)
+                  8e009084    0000009c                         : fputc.obj (.text)
+                  8e009120    0000009a                         : memcpy16.obj (.text)
+                  8e0091ba    00000002     --HOLE-- [fill = 0]
+                  8e0091bc    00000098                         : _bufread.obj (.text)
+                  8e009254    00000088                         : fgetc.obj (.text)
+                  8e0092dc    00000076                         : ungetc.obj (.text)
+                  8e009352    0000006a                         : memset16.obj (.text)
+                  8e0093bc    00000068                         : exit.obj (.text)
+                  8e009424    00000068                         : fclose.obj (.text)
+                  8e00948c    00000064                         : ltoa.obj (.text)
+                  8e0094f0    00000064                         : trgmsg.obj (.text)
+                  8e009554    00000060                         : printf.obj (.text)
+                  8e0095b4    00000058                         : ftell.obj (.text)
+                  8e00960c    00000054                         : cpy_tbl.obj (.text)
+                  8e009660    00000050                         : atoi.obj (.text)
+                  8e0096b0    00000050                         : fd_toi16.obj (.text)
+                  8e009700    00000050                         : fseek.obj (.text)
+                  8e009750    0000004e                         : fd_tos16.obj (.text)
+                  8e00979e    00000002     --HOLE-- [fill = 0]
+                  8e0097a0    0000004c                         : boot.obj (.text)
+                  8e0097ec    00000036                         : strncpy.obj (.text)
+                  8e009822    0000002c                         : i_tofd16.obj (.text)
+                  8e00984e    00000002     --HOLE-- [fill = 0]
+                  8e009850    0000002c                         : ll_mul16.obj (.text)
+                  8e00987c    00000024                         : memccpy.obj (.text)
+                  8e0098a0    00000020                         : args_main.obj (.text)
+                  8e0098c0    0000001c                         : _lock.obj (.text)
+                  8e0098dc    0000001a                         : strrchr.obj (.text)
+                  8e0098f6    00000002     --HOLE-- [fill = 0]
+                  8e0098f8    00000018                         : memchr.obj (.text)
+                  8e009910    00000018                         : strchr.obj (.text)
+                  8e009928    00000016                         : strcmp.obj (.text)
+                  8e00993e    00000002     --HOLE-- [fill = 0]
+                  8e009940    00000014                         : icall16.obj (.text)
+                  8e009954    00000012                         : strcpy.obj (.text)
+                  8e009966    00000002     --HOLE-- [fill = 0]
+                  8e009968    00000012                         : strlen.obj (.text)
+                  8e00997a    00000002     --HOLE-- [fill = 0]
+                  8e00997c    0000000c                         : remove.obj (.text)
+
+.stack     0    8e009988    00008000     UNINITIALIZED
+                  8e009988    00008000     --HOLE--
+
+.sysmem    0    8e011988    00008000     UNINITIALIZED
+                  8e011988    00000008     rtsv4_T_le_eabi.lib : memory.obj (.sysmem)
+                  8e011990    00007ff8     --HOLE--
+
+.const     0    8e019988    000003b0     
+                  8e019988    00000101     rtsv4_T_le_eabi.lib : ctype.obj (.const:_ctypes_)
+                  8e019a89    00000003     --HOLE-- [fill = 0]
+                  8e019a8c    000000d8     device_nand.obj (.const:DEVICE_NAND_CHIP_infoTable)
+                  8e019b64    00000004     --HOLE-- [fill = 0]
+                  8e019b68    00000050     rtsv4_T_le_eabi.lib : strtod.obj (.const:digits)
+                  8e019bb8    00000050                         : strtold.obj (.const:digits)
+                  8e019c08    00000048     device_nand.obj (.const:DEVICE_NAND_PAGE_layout)
+                  8e019c50    00000048     rtsv4_T_le_eabi.lib : strtod.obj (.const:powerof10)
+                  8e019c98    00000048                         : strtold.obj (.const:powerof10)
+                  8e019ce0    0000002c     device_nand.obj (.const)
+                  8e019d0c    00000024     device.obj (.const)
+                  8e019d30    00000008     device.obj (.const:.string)
+
+.bss       0    8e019d38    0000029c     UNINITIALIZED
+                  8e019d38    00000120     rtsv4_T_le_eabi.lib : trgmsg.obj (.bss:__CIOBUF_)
+                  8e019e58    000000c8                         : trgdrv.obj (.bss:result$1)
+                  8e019f20    000000a0                         : defs.obj (.bss:_tmpnams)
+                  8e019fc0    00000008     nandwriter.obj (.bss)
+                  8e019fc8    00000008     rtsv4_T_le_eabi.lib : trgdrv.obj (.bss)
+                  8e019fd0    00000004     util.obj (.bss)
+
+.data      0    8e019fd4    000001f4     
+                  8e019fd4    000000f0     rtsv4_T_le_eabi.lib : defs.obj (.data:_ftable)
+                  8e01a0c4    00000078                         : lowlev.obj (.data:_device)
+                  8e01a13c    00000050                         : lowlev.obj (.data:_stream)
+                  8e01a18c    00000010                         : defs.obj (.data)
+                  8e01a19c    0000000c                         : memory.obj (.data)
+                  8e01a1a8    00000008                         : _lock.obj (.data)
+                  8e01a1b0    00000008                         : exit.obj (.data)
+                  8e01a1b8    00000004                         : errno.obj (.data)
+                  8e01a1bc    00000004                         : fopen.obj (.data)
+                  8e01a1c0    00000004                         : lowlev.obj (.data)
+                  8e01a1c4    00000004                         : stkdepth_vars.obj (.data)
+
+
+GLOBAL SYMBOLS: SORTED ALPHABETICALLY BY Name 
+
+address    name
+--------   ----
+8e0093bd   C$$EXIT
+8e009519   C$$IO$$
+8e0075c4   DEBUG_printHexInt
+8e0075ac   DEBUG_printString
+8e0075fc   DEBUG_readChar
+8e007618   DEBUG_readHexInt
+8e0075e0   DEBUG_readString
+8e004890   DEVICE_DDR2Init
+8e004a98   DEVICE_EMIFInit
+8e004b64   DEVICE_I2C0Init
+8e004bac   DEVICE_I2C0Reset
+8e0041d4   DEVICE_LPSCTransition
+8e019d00   DEVICE_NAND_BB_info
+8e019a8c   DEVICE_NAND_CHIP_infoTable
+8e019ce0   DEVICE_NAND_ECC_info
+8e019c08   DEVICE_NAND_PAGE_layout
+8e004544   DEVICE_PLL1Init
+8e00472c   DEVICE_PLL2Init
+8e004324   DEVICE_PSCInit
+8e004c0c   DEVICE_TIMER0Init
+8e004c74   DEVICE_TIMER0Start
+8e004cf0   DEVICE_TIMER0Status
+8e004cb8   DEVICE_TIMER0Stop
+8e004ae4   DEVICE_UART0Init
+8e0042e8   DEVICE_bootMode
+8e0042fc   DEVICE_emifBusWidth
+8e0040e4   DEVICE_init
+8e004290   DEVICE_pinmuxControl
+02000000   EMIFStart
+8e000000   EXTERNAL_RAM_END
+80000000   EXTERNAL_RAM_START
+8e00728d   HOSTclock
+8e00723d   HOSTclose
+8e0071c9   HOSTlseek
+8e007161   HOSTopen
+8e0070fd   HOSTread
+8e007089   HOSTrename
+8e007039   HOSTtime
+8e006fe9   HOSTunlink
+8e006f85   HOSTwrite
+8e009941   IND$CALL
+8e000180   NAND_badBlockCheck
+8e00077c   NAND_badBlockMark
+8e001384   NAND_eraseBlocks
+8e001450   NAND_eraseBlocks_with_bb_check
+8e00133c   NAND_globalErase
+8e001360   NAND_globalErase_with_bb_check
+8e00073c   NAND_isWriteProtected
+8e000000   NAND_open
+8e001648   NAND_protectBlocks
+8e000318   NAND_readPage
+8e00054c   NAND_readSpareBytesOfPage
+8e0002f4   NAND_reset
+8e001580   NAND_unProtectBlocks
+8e001244   NAND_verifyBlockErased
+8e00116c   NAND_verifyPage
+8e000894   NAND_writeOnlySpareBytesOfPage
+8e000a3c   NAND_writePage
+8e000db0   NAND_writePage_ubl_header
+8e0060e0   UTIL_allocMem
+8e00645c   UTIL_buildCRC16Table
+8e0062d0   UTIL_buildCRC32Table
+8e0063a8   UTIL_calcCRC16
+8e006220   UTIL_calcCRC32
+8e006154   UTIL_callocMem
+8e0060b8   UTIL_getCurrMemPtr
+8e0060c4   UTIL_setCurrMemPtr
+8e0061c4   UTIL_waitLoop
+8e00620c   UTIL_waitLoopAccurate
+8e019d38   __CIOBUF_
+00008000   __STACK_SIZE
+00008000   __SYSMEM_SIZE
+8e008fe9   __TI_auto_init
+02000000   __TI_static_base__
+8e008cf0   __aeabi_cdcmpeq
+8e008cf0   __aeabi_cdcmple
+8e009751   __aeabi_d2f
+8e0096b1   __aeabi_d2iz
+8e0081ff   __aeabi_dadd
+8e00881d   __aeabi_ddiv
+8e008b29   __aeabi_dmul
+8e0081f5   __aeabi_dsub
+8e009823   __aeabi_i2d
+8e008704   __aeabi_idivmod
+8e009851   __aeabi_lmul
+8e009353   __aeabi_memclr
+8e009353   __aeabi_memclr4
+8e009353   __aeabi_memclr8
+8e009121   __aeabi_memcpy
+8e009121   __aeabi_memcpy4
+8e009121   __aeabi_memcpy8
+8e009355   __aeabi_memset
+8e009355   __aeabi_memset4
+8e009355   __aeabi_memset8
+8e01a198   __aeabi_stderr
+8e01a190   __aeabi_stdin
+8e01a194   __aeabi_stdout
+8e008a34   __aeabi_uidivmod
+8e0072ec   __aeabi_uldivmod
+ffffffff   __binit__
+ffffffff   __c_args__
+8e009988   __stack
+8e0098a1   _args_main
+8e0091bd   _buff_read
+8e0097a0   _c_int00
+8e007d55   _cleanup
+8e01a1b0   _cleanup_ptr
+8e019988   _ctypes_
+8e008dc5   _doflush
+8e01a1b4   _dtors_ptr
+8e01a18c   _ft_end
+8e019fd4   _ftable
+8e01a1a8   _lock
+8e0098d1   _nop
+8e00312d   _printfi
+8e008ee9   _rd_ok
+8e0098c9   _register_lock
+8e0098c1   _register_unlock
+8e0054f5   _scanfi
+8e011988   _sys_memory
+8e019f20   _tmpnams
+8e01a1ac   _unlock
+8e008e81   _wrt_ok
+8e0093c1   abort
+8e006e99   add_device
+8e009661   atoi
+ffffffff   binit
+8e006a61   calloc
+8e006e1d   close
+8e00960d   copy_in
+8e019d2c   devString
+8e01a1b8   errno
+8e0093c9   exit
+8e009425   fclose
+8e008e19   fflush
+8e009255   fgetc
+8e006e11   find_registered_device
+8e007e41   fopen
+8e009085   fputc
+8e008929   fputs
+8e008c15   fread
+8e0066e9   free
+8e007da1   freopen
+8e0084d5   fscanf
+8e009701   fseek
+8e0095b5   ftell
+8e009255   getc
+8e0092c9   getchar
+8e006f31   getenv
+8e006db1   lseek
+8e00948d   ltoa
+8e0032c8   main
+8e01a1c4   main_func_sp
+8e006669   malloc
+8e006971   memalign
+8e00987d   memccpy
+8e0098f9   memchr
+8e009121   memcpy
+8e00935b   memset
+8e0065c5   minit
+8e006d09   open
+8e009555   printf
+8e009085   putc
+8e00910d   putchar
+8e008a0d   puts
+8e006c55   read
+8e009521   readmsg
+8e00680d   realloc
+8e00997d   remove
+8e006c11   remove_device
+8e006bb5   rename
+8e00849d   scanf
+8e008f39   setvbuf
+8e009911   strchr
+8e009929   strcmp
+8e009955   strcpy
+8e009969   strlen
+8e0097ed   strncpy
+8e0098dd   strrchr
+8e007811   strtod
+8e008349   strtol
+8e007a4d   strtold
+8e007e95   strtoll
+8e0085d9   strtoul
+8e008085   strtoull
+8e0092dd   ungetc
+8e006b79   unlink
+8e006aa1   write
+8e0094f1   writemsg
+
+
+GLOBAL SYMBOLS: SORTED BY Symbol Address 
+
+address    name
+--------   ----
+00008000   __STACK_SIZE
+00008000   __SYSMEM_SIZE
+02000000   EMIFStart
+02000000   __TI_static_base__
+80000000   EXTERNAL_RAM_START
+8e000000   EXTERNAL_RAM_END
+8e000000   NAND_open
+8e000180   NAND_badBlockCheck
+8e0002f4   NAND_reset
+8e000318   NAND_readPage
+8e00054c   NAND_readSpareBytesOfPage
+8e00073c   NAND_isWriteProtected
+8e00077c   NAND_badBlockMark
+8e000894   NAND_writeOnlySpareBytesOfPage
+8e000a3c   NAND_writePage
+8e000db0   NAND_writePage_ubl_header
+8e00116c   NAND_verifyPage
+8e001244   NAND_verifyBlockErased
+8e00133c   NAND_globalErase
+8e001360   NAND_globalErase_with_bb_check
+8e001384   NAND_eraseBlocks
+8e001450   NAND_eraseBlocks_with_bb_check
+8e001580   NAND_unProtectBlocks
+8e001648   NAND_protectBlocks
+8e00312d   _printfi
+8e0032c8   main
+8e0040e4   DEVICE_init
+8e0041d4   DEVICE_LPSCTransition
+8e004290   DEVICE_pinmuxControl
+8e0042e8   DEVICE_bootMode
+8e0042fc   DEVICE_emifBusWidth
+8e004324   DEVICE_PSCInit
+8e004544   DEVICE_PLL1Init
+8e00472c   DEVICE_PLL2Init
+8e004890   DEVICE_DDR2Init
+8e004a98   DEVICE_EMIFInit
+8e004ae4   DEVICE_UART0Init
+8e004b64   DEVICE_I2C0Init
+8e004bac   DEVICE_I2C0Reset
+8e004c0c   DEVICE_TIMER0Init
+8e004c74   DEVICE_TIMER0Start
+8e004cb8   DEVICE_TIMER0Stop
+8e004cf0   DEVICE_TIMER0Status
+8e0054f5   _scanfi
+8e0060b8   UTIL_getCurrMemPtr
+8e0060c4   UTIL_setCurrMemPtr
+8e0060e0   UTIL_allocMem
+8e006154   UTIL_callocMem
+8e0061c4   UTIL_waitLoop
+8e00620c   UTIL_waitLoopAccurate
+8e006220   UTIL_calcCRC32
+8e0062d0   UTIL_buildCRC32Table
+8e0063a8   UTIL_calcCRC16
+8e00645c   UTIL_buildCRC16Table
+8e0065c5   minit
+8e006669   malloc
+8e0066e9   free
+8e00680d   realloc
+8e006971   memalign
+8e006a61   calloc
+8e006aa1   write
+8e006b79   unlink
+8e006bb5   rename
+8e006c11   remove_device
+8e006c55   read
+8e006d09   open
+8e006db1   lseek
+8e006e11   find_registered_device
+8e006e1d   close
+8e006e99   add_device
+8e006f31   getenv
+8e006f85   HOSTwrite
+8e006fe9   HOSTunlink
+8e007039   HOSTtime
+8e007089   HOSTrename
+8e0070fd   HOSTread
+8e007161   HOSTopen
+8e0071c9   HOSTlseek
+8e00723d   HOSTclose
+8e00728d   HOSTclock
+8e0072ec   __aeabi_uldivmod
+8e0075ac   DEBUG_printString
+8e0075c4   DEBUG_printHexInt
+8e0075e0   DEBUG_readString
+8e0075fc   DEBUG_readChar
+8e007618   DEBUG_readHexInt
+8e007811   strtod
+8e007a4d   strtold
+8e007d55   _cleanup
+8e007da1   freopen
+8e007e41   fopen
+8e007e95   strtoll
+8e008085   strtoull
+8e0081f5   __aeabi_dsub
+8e0081ff   __aeabi_dadd
+8e008349   strtol
+8e00849d   scanf
+8e0084d5   fscanf
+8e0085d9   strtoul
+8e008704   __aeabi_idivmod
+8e00881d   __aeabi_ddiv
+8e008929   fputs
+8e008a0d   puts
+8e008a34   __aeabi_uidivmod
+8e008b29   __aeabi_dmul
+8e008c15   fread
+8e008cf0   __aeabi_cdcmpeq
+8e008cf0   __aeabi_cdcmple
+8e008dc5   _doflush
+8e008e19   fflush
+8e008e81   _wrt_ok
+8e008ee9   _rd_ok
+8e008f39   setvbuf
+8e008fe9   __TI_auto_init
+8e009085   fputc
+8e009085   putc
+8e00910d   putchar
+8e009121   __aeabi_memcpy
+8e009121   __aeabi_memcpy4
+8e009121   __aeabi_memcpy8
+8e009121   memcpy
+8e0091bd   _buff_read
+8e009255   fgetc
+8e009255   getc
+8e0092c9   getchar
+8e0092dd   ungetc
+8e009353   __aeabi_memclr
+8e009353   __aeabi_memclr4
+8e009353   __aeabi_memclr8
+8e009355   __aeabi_memset
+8e009355   __aeabi_memset4
+8e009355   __aeabi_memset8
+8e00935b   memset
+8e0093bd   C$$EXIT
+8e0093c1   abort
+8e0093c9   exit
+8e009425   fclose
+8e00948d   ltoa
+8e0094f1   writemsg
+8e009519   C$$IO$$
+8e009521   readmsg
+8e009555   printf
+8e0095b5   ftell
+8e00960d   copy_in
+8e009661   atoi
+8e0096b1   __aeabi_d2iz
+8e009701   fseek
+8e009751   __aeabi_d2f
+8e0097a0   _c_int00
+8e0097ed   strncpy
+8e009823   __aeabi_i2d
+8e009851   __aeabi_lmul
+8e00987d   memccpy
+8e0098a1   _args_main
+8e0098c1   _register_unlock
+8e0098c9   _register_lock
+8e0098d1   _nop
+8e0098dd   strrchr
+8e0098f9   memchr
+8e009911   strchr
+8e009929   strcmp
+8e009941   IND$CALL
+8e009955   strcpy
+8e009969   strlen
+8e00997d   remove
+8e009988   __stack
+8e011988   _sys_memory
+8e019988   _ctypes_
+8e019a8c   DEVICE_NAND_CHIP_infoTable
+8e019c08   DEVICE_NAND_PAGE_layout
+8e019ce0   DEVICE_NAND_ECC_info
+8e019d00   DEVICE_NAND_BB_info
+8e019d2c   devString
+8e019d38   __CIOBUF_
+8e019f20   _tmpnams
+8e019fd4   _ftable
+8e01a18c   _ft_end
+8e01a190   __aeabi_stdin
+8e01a194   __aeabi_stdout
+8e01a198   __aeabi_stderr
+8e01a1a8   _lock
+8e01a1ac   _unlock
+8e01a1b0   _cleanup_ptr
+8e01a1b4   _dtors_ptr
+8e01a1b8   errno
+8e01a1c4   main_func_sp
+ffffffff   __binit__
+ffffffff   __c_args__
+ffffffff   binit
+
+[362 symbols]
