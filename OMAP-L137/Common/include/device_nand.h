@@ -1,7 +1,7 @@
 /* --------------------------------------------------------------------------
   FILE        : device_nand.h
   PROJECT     : TI Booting and Flashing Utilities
-  AUTHOR      : Daniel Allred and Stanley Park
+  AUTHOR      : Daniel Allred
   DESC        : Provides device differentiation for the project files. This
                 file MUST be modified to match the device specifics.
 ----------------------------------------------------------------------------- */
@@ -32,12 +32,6 @@ extern far "c" {
 // Defines which NAND blocks the RBL will search in for a UBL image
 #define DEVICE_NAND_RBL_SEARCH_START_BLOCK     (1)
 #define DEVICE_NAND_RBL_SEARCH_END_BLOCK       (24)
-
-
-#define DEVICE_NAND_UBL_SEARCH_START_BLOCK     (6)//FIX Me;temporary memory addr wrong
-#define DEVICE_NAND_UBL_SEARCH_END_BLOCK       (50)//FIX Me;temporary memory addr wrong
-
-
 
 /******************************************************
 * Global Typedef declarations                         *

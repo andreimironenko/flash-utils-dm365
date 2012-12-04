@@ -16,14 +16,11 @@
 
 // This module's header file 
 #include "spi.h"
-#include "device_spi.h"
+
 
 /************************************************************
 * Explicit External Declarations                            *
 ************************************************************/
-
-extern Uint32 DEVICE_SPI_baseAddr[];
-
 
 
 /************************************************************
@@ -53,24 +50,13 @@ static Uint32 LOCAL_setupMode(SPI_InfoHandle hSPIInfo);
 SPI_InfoObj gSPIInfo;
 #endif
 
-// Default SPI Config strcuture
-const SPI_ConfigObj DEFAULT_SPI_CONFIG = 
-{
-  1,        // polarity
-  0,        // phase
-  7,        // prescalar
-  8         // charLen
-};
-
-SPI_ConfigHandle const hDEFAULT_SPI_CONFIG = (SPI_ConfigHandle) &DEFAULT_SPI_CONFIG;
-
 
 /************************************************************
 * Global Function Definitions                               *
 ************************************************************/
 
 // Initialze NAND interface and find the details of the NAND used
-SPI_InfoHandle SPI_open(Uint32 spiPeripheralNum, SPI_Role role, SPI_Mode mode, SPI_ConfigHandle config)
+SPI_InfoHandle SPI_open(Uint32 spiPeripheralNum, SPI_Role role, SPI_Mode mode, SPI_Config *config)
 {
   DEVICE_SPIRegs *SPI;
   SPI_InfoHandle hSPIInfo;
@@ -86,7 +72,7 @@ SPI_InfoHandle SPI_open(Uint32 spiPeripheralNum, SPI_Role role, SPI_Mode mode, S
 
   // Assign the correct register base
   hSPIInfo->peripheralNum = spiPeripheralNum;  
-  hSPIInfo->regs = (void *) DEVICE_SPI_baseAddr[spiPeripheralNum];
+  hSPIInfo->regs = (void *) (((Uint32)SPI0) + (SPI_MEMORYMAP_SPACING *spiPeripheralNum) );
   SPI = (DEVICE_SPIRegs *) hSPIInfo->regs;
   
   // Assign mode and role
@@ -169,56 +155,15 @@ Uint32 SPI_writeBytes(SPI_InfoHandle hSPIInfo, Uint32 byteCnt, Uint8 *src)
   return E_PASS;
 }
 
-Uint32 SPI_xferBytes(SPI_InfoHandle hSPIInfo, Uint32 numBytes, Uint8 *spiBuf )
+Uint32 SPI_xferOneChar(SPI_InfoHandle hSPIInfo, Uint32 dataOut)
 {
-  VUint32 *spiTxReg;
-  Uint32  i;
-  
+  Uint32 spiflg, spibuf;
   DEVICE_SPIRegs *SPI = (DEVICE_SPIRegs *) hSPIInfo->regs;
 
-  spiTxReg = &(SPI->SPIDAT[DEVICE_SPI_DATOFFSET]);
-
-  // Clear any overrun conditions
-  if (SPI->SPIFLG & SPI_SPIFLG_OVRNINTFLG)
-  {
-    spiBuf[0] = (SPI->SPIBUF);
-    SPI->SPIFLG &= SPI_SPIFLG_OVRNINTFLG;  
-  }
-  
-  // Write output data
-  for (i=0; i< numBytes; i++)
-  {
-    // Wait for transmit ready
-    while (!(SPI->SPIFLG & SPI_SPIFLG_TXINTFLAG));  
-  
-    // Transmit data
-    *spiTxReg = spiBuf[i];
-    
-    while (!(SPI->SPIFLG & SPI_SPIFLG_RXINTFLAG));
-    
-    spiBuf[i] = (SPI->SPIBUF);
-  }
-
-  return E_PASS;
-}
-
-
-Uint8 SPI_xferOneChar(SPI_InfoHandle hSPIInfo, Uint8 dataOut)
-{
-  DEVICE_SPIRegs *SPI = (DEVICE_SPIRegs *) hSPIInfo->regs;
-  
-  Uint8 *spiDat = (Uint8 *) &(SPI->SPIDAT[DEVICE_SPI_DATOFFSET]);
+  Uint32 mask = (0x1 << hSPIInfo->config->charLen) - 1;
 
   // Write output data
-  while (!(SPI->SPIFLG & SPI_SPIFLG_TXINTFLAG));
-  
-  *spiDat = dataOut;
-  
-  while (!(SPI->SPIFLG & SPI_SPIFLG_RXINTFLAG));
-  
-  return (Uint8)(SPI->SPIBUF);
-  
-#if (0)  
+  SPI->SPIDAT0 = dataOut & mask;
 
   do 
   { 
@@ -243,7 +188,6 @@ Uint8 SPI_xferOneChar(SPI_InfoHandle hSPIInfo, Uint8 dataOut)
   while (TRUE);
 
   return (spibuf & mask);
-#endif  
 }
 
 void SPI_enableCS(SPI_InfoHandle hSPIInfo)
@@ -273,6 +217,13 @@ void SPI_disableCS(SPI_InfoHandle hSPIInfo)
   UTIL_waitLoopAccurate ((Uint32) DELAY_AFTER_CS_UP);
 }
 
+
+// Defining this macro for the build will cause write (flash) ability to be removed
+// This can be used for using this driver as read-only for ROM code
+#ifndef USE_IN_ROM    
+
+
+#endif
 
 /************************************************************
 * Local Function Definitions                                *
@@ -348,7 +299,7 @@ static Uint32 LOCAL_setupMode(SPI_InfoHandle hSPIInfo)
   SPI->SPIFMT[0] |= ((hSPIInfo->config->prescalar & 0xFF) << 8);
 
   // CSHOLD off, FMT[0] used  
-  SPI->SPIDAT[1] = 0x00;
+  SPI->SPIDAT1 = 0x00;
 
   // All chip selects go high when no transfer
   SPI->SPIDEF = 0xFF;
@@ -361,7 +312,14 @@ static Uint32 LOCAL_setupMode(SPI_InfoHandle hSPIInfo)
 }
 
 
+
 /***********************************************************
 * End file                                                 *
 ***********************************************************/
+
+/* --------------------------------------------------------------------------
+  HISTORY
+    v1.00 - DJA - 19-Aug-2008
+      Initial release
+-------------------------------------------------------------------------- */
 

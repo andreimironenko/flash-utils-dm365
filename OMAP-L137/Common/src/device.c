@@ -51,7 +51,7 @@
 
 const String devString = "OMAP-L137";
 
-#define SKIP_LOW_LEVEL_INIT /*skip the low-level define PLL and DDR2*/
+
 
 /************************************************************
 * Global Function Definitions                               *
@@ -194,27 +194,6 @@ Uint32 DEVICE_EMIFInit()
   return E_PASS;
 }
 
-Uint32 DEVICE_SPIInit(Uint8 periphNum)
-{
-  if (periphNum == 0)
-  {
-    DEVICE_LPSCTransition(PSCNUM0, LPSC_SPI0, PD0, PSC_ENABLE);
-    DEVICE_pinmuxControl(7,0xF0FFF000,0x10111000); // nSPI0_SCS[0], SPI0_CLK, SPI0_SIMO[0], SPI0_SOMI[0]
-  }
-  else if (periphNum == 1)
-  {
-    DEVICE_LPSCTransition(PSCNUM1, LPSC_SPI1, PD0, PSC_ENABLE);
-    DEVICE_pinmuxControl(8,0x00000FFF,0x00000111); // SPI1_CLK, SPI1_SIMO[0], SPI1_SOMI[0]
-    DEVICE_pinmuxControl(9,0x0000000F,0x00000001); // nSPI1_SCS[0]    
-  }
-  else
-  {
-    return E_FAIL;
-  }
-  
-  return E_PASS;
-}
-
 
 /************************************************************
 * Local Function Definitions                                *
@@ -225,63 +204,5 @@ Uint32 DEVICE_SPIInit(Uint8 periphNum)
 * End file                                                 *
 ***********************************************************/
 
-//From here, Stanley Park added for compiling first, need to be significantly changed
 
-Uint32 DEVICE_TIMER0Init()
-{
-  // Power-up the Timer
-  //DEVICE_LPSCTransition(LPSC_TIMER0, PD0 ,PSC_ENABLE);
 
-  // Put timer into reset
-  //TIMER0->EMUMGT_CLKSPD = 0x00000003;
-  //TIMER0->TCR   = 0x00000000;
-  
-  // Setup as 2 unchained 32-bit timers
-  //TIMER0->TGCR  = 0x00000005;
-
-  // Reset timers to zero 
-  //TIMER0->TIM12 = 0x00000000;
-
-  // Set period to 5 sec
-  //TIMER0->PRD12 = 0x019BFCC0;
-
-  return E_PASS;
-}
-
-void DEVICE_TIMER0Start(void)
-{
-  // Clear interrupt
-  //AINTC->IRQ1   |=  0x00000001;
-
-  // Put timer out in reset
-  //TIMER0->TGCR  &= ~(0x00000001);
-    
-  // Reset the timer counter to zero
-  //TIMER0->TIM12 = 0x00000000;
-
-  // Set for one-time run
-  //TIMER0->TCR   = 0x00000040;
-    
-  // Take timer out of reset
-  //TIMER0->TGCR  = 0x00000005;
-  
-}
-
-void DEVICE_TIMER0Stop(void)
-{
-  // Clear interrupt
-  //AINTC->IRQ1   |=  0x00000001;
-
-  // Put timer in reset
-  //TIMER0->TCR   = 0x00000000;
-  //TIMER0->TGCR  = 0x00000000;
-
-  // Reset timer count to zero 
-  //TIMER0->TIM12 = 0x00000000;
-}
-
-Uint32 DEVICE_TIMER0Status(void)
-{
-  //return ((AINTC->IRQ1)&0x1);
-	return 0;
-}

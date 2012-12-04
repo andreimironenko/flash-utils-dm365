@@ -1,4 +1,4 @@
-The DM35x_RevC directory contains files needed for the DM335, DM350, and DM355 devices (Silicon Revision 1.3).  Silicon revision 1.1 is sometimes referred to as revision C.
+The DM35x_RevC directory contains files needed for the DM335, DM350, and DM355 devices (Silicon Revision 1.3).  Silicon revision 1.1 is sometimes referred to as revision A.
 
 Silicon revision 1.2 was never released to the market.
 

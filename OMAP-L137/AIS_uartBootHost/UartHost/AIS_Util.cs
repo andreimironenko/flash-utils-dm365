@@ -177,17 +177,14 @@ namespace AIS_Util
                 logFxn("(AIS Parse): Waiting for BOOTME...");
 		        status = readFxn(rcvInit, 0, 8, ioTimeout * 10);
 
-
 		        // fail on incorrect sequence or IO error
-                
-                
-                for (i = 0; i < 7; i++)
-                        if (rcvInit[i] != corInit[i])
-                        {
-                            logFxn("(AIS Parse): Read invalid BOOTME string.");
-                            status = AIS_error;
-                            break;
-                        }
+		        for (i = 0; i < 7; i++)
+                    if (rcvInit[i] != corInit[i])
+                    {
+                        logFxn("(AIS Parse): Read invalid BOOTME string.");
+                        status = AIS_error;
+                        break;
+                    }
 	        }
 
 	        while (status == AIS_inProgress)

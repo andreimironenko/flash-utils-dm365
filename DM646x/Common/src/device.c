@@ -50,186 +50,70 @@ extern __FAR__ Uint32 EXTERNAL_RAM_START;
 * Local Variable Definitions                                *
 \***********************************************************/
 
-#if defined(DM6467_459MHz)
-  // For Micron MT47H64M16BT-3 @ 229.5 MHz
-#elif defined(DM6467_594MHz)
-  // For Micron MT47H64M16BT-3 @ 297 MHz
-  static const Uint8 DDR_NM = 0;
-  static const Uint8 DDR_CL = 5;
-  static const Uint8 DDR_IBANK = 3;
-  static const Uint8 DDR_PAGESIZE = 2;
-  static const Uint8 DDR_T_RFC = 37;
-  static const Uint8 DDR_T_RP = 4;
-  static const Uint8 DDR_T_RCD = 4;
-  static const Uint8 DDR_T_WR = 4;
-  static const Uint8 DDR_T_RAS = 11;
-  static const Uint8 DDR_T_RC = 16;
-  static const Uint8 DDR_T_RRD = 2;
-  static const Uint8 DDR_T_WTR = 2;
-  static const Uint8 DDR_T_RASMAX = 7;
-  static const Uint8 DDR_T_XP = 1;    
-  static const Uint8 DDR_T_XSNR = 40;
-  static const Uint8 DDR_T_XSRD = 199;
-  static const Uint8 DDR_T_RTP = 2;
-  static const Uint8 DDR_T_CKE = 2;
-  static const Uint16 DDR_RR = 2317;
-  static const Uint8 DDR_READ_Latency = 6; 
-#elif defined(DM6467_675MHz)
-  // For Micron MT47H64M16BT-3 @ 297 MHz
-  static const Uint8 DDR_NM = 0;
-  static const Uint8 DDR_CL = 5;
-  static const Uint8 DDR_IBANK = 3;
-  static const Uint8 DDR_PAGESIZE = 2;
-  static const Uint8 DDR_T_RFC = 37;
-  static const Uint8 DDR_T_RP = 4;
-  static const Uint8 DDR_T_RCD = 4;
-  static const Uint8 DDR_T_WR = 4;
-  static const Uint8 DDR_T_RAS = 11;
-  static const Uint8 DDR_T_RC = 16;
-  static const Uint8 DDR_T_RRD = 2;
-  static const Uint8 DDR_T_WTR = 2;
-  static const Uint8 DDR_T_RASMAX = 7;
-  static const Uint8 DDR_T_XP = 1;    
-  static const Uint8 DDR_T_XSNR = 40;
-  static const Uint8 DDR_T_XSRD = 199;
-  static const Uint8 DDR_T_RTP = 2;
-  static const Uint8 DDR_T_CKE = 2;
-  static const Uint16 DDR_RR = 2317;
-  static const Uint8 DDR_READ_Latency = 6; 
-#elif defined(DM6467_729MHz)
-  // For Micron MT47H64M16BT-3 @ 310.5 MHz  
-  static const Uint8 DDR_NM = 0;
-  static const Uint8 DDR_CL = 5;
-  static const Uint8 DDR_IBANK = 3;
-  static const Uint8 DDR_PAGESIZE = 2;
-  static const Uint8 DDR_T_RFC = 37;
-  static const Uint8 DDR_T_RP = 4;
-  static const Uint8 DDR_T_RCD = 4;
-  static const Uint8 DDR_T_WR = 4;
-  static const Uint8 DDR_T_RAS = 11;
-  static const Uint8 DDR_T_RC = 16;
-  static const Uint8 DDR_T_RRD = 2;
-  static const Uint8 DDR_T_WTR = 2;
-  static const Uint8 DDR_T_RASMAX = 7;
-  static const Uint8 DDR_T_XP = 1;    
-  static const Uint8 DDR_T_XSNR = 40;
-  static const Uint8 DDR_T_XSRD = 199;
-  static const Uint8 DDR_T_RTP = 2;
-  static const Uint8 DDR_T_CKE = 2;
-  static const Uint16 DDR_RR = 2317;
-  static const Uint8 DDR_READ_Latency = 6; 
-#elif defined(DM6467_900MHz)
-  // For Micron MT47H64M16BT-3 @ 400 MHz
-  static const Uint8 DDR_NM = 0;
-  static const Uint8 DDR_CL = 5;
-  static const Uint8 DDR_IBANK = 3;
-  static const Uint8 DDR_PAGESIZE = 2;
-  static const Uint8 DDR_T_RFC = 50;
-  static const Uint8 DDR_T_RP = 5;
-  static const Uint8 DDR_T_RCD = 5;
-  static const Uint8 DDR_T_WR = 6;
-  static const Uint8 DDR_T_RAS = 18;
-  static const Uint8 DDR_T_RC = 23;
-  static const Uint8 DDR_T_RRD = 4;
-  static const Uint8 DDR_T_WTR = 3;
-  static const Uint8 DDR_T_RASMAX = 17;
-  static const Uint8 DDR_T_XP = 2;
-  static const Uint8 DDR_T_XSNR = 59;
-  static const Uint8 DDR_T_XSRD = 0xc7;
-  static const Uint8 DDR_T_RTP = 3;
-  static const Uint8 DDR_T_CKE = 2;
-  static const Uint16 DDR_RR = 0xc57;
-  static const Uint8 DDR_READ_Latency = 7; 
-#elif defined(DM6467_1000MHz)
-  // For Micron MT47H64M16BT-3 @ 400 MHz
-  static const Uint8 DDR_NM = 0;
-  static const Uint8 DDR_CL = 5;
-  static const Uint8 DDR_IBANK = 3;
-  static const Uint8 DDR_PAGESIZE = 2;
-  static const Uint8 DDR_T_RFC = 50;
-  static const Uint8 DDR_T_RP = 5;
-  static const Uint8 DDR_T_RCD = 5;
-  static const Uint8 DDR_T_WR = 6;
-  static const Uint8 DDR_T_RAS = 18;
-  static const Uint8 DDR_T_RC = 23;
-  static const Uint8 DDR_T_RRD = 4;
-  static const Uint8 DDR_T_WTR = 3;
-  static const Uint8 DDR_T_RASMAX = 17;
-  static const Uint8 DDR_T_XP = 2;
-  static const Uint8 DDR_T_XSNR = 59;
-  static const Uint8 DDR_T_XSRD = 0xc7;
-  static const Uint8 DDR_T_RTP = 3;
-  static const Uint8 DDR_T_CKE = 2;
-  static const Uint16 DDR_RR = 0xc57;
-  static const Uint8 DDR_READ_Latency = 7; 
-#else 
-  // Use 594 for default
-  // For Micron MT47H64M16BT-37E @ 162 MHz
-  static const Uint8 DDR_NM = 0;
-  static const Uint8 DDR_CL = 5;
-  static const Uint8 DDR_IBANK = 3;
-  static const Uint8 DDR_PAGESIZE = 2;
-  static const Uint8 DDR_T_RFC = 37;
-  static const Uint8 DDR_T_RP = 4;
-  static const Uint8 DDR_T_RCD = 4;
-  static const Uint8 DDR_T_WR = 4;
-  static const Uint8 DDR_T_RAS = 11;
-  static const Uint8 DDR_T_RC = 16;
-  static const Uint8 DDR_T_RRD = 2;
-  static const Uint8 DDR_T_WTR = 2;
-  static const Uint8 DDR_T_RASMAX = 7;
-  static const Uint8 DDR_T_XP = 1;    
-  static const Uint8 DDR_T_XSNR = 40;
-  static const Uint8 DDR_T_XSRD = 199;
-  static const Uint8 DDR_T_RTP = 2;
-  static const Uint8 DDR_T_CKE = 2;
-  static const Uint16 DDR_RR = 2317;
-  static const Uint8 DDR_READ_Latency = 6; 
-#endif
-
-#if defined(DM6467_459MHz)
+#if defined(DM6467_27MHz_459MHz)
+#define OSC_IN_27MHz
   static const Uint32 PLL1_Mult = 17;       // DSP=459 MHz @ 27M input
   static const Uint32 PLL1Div4_ratio = 5;   // ATA divider
   static const Uint32 PLL1Div8_ratio = 17;  // VPBE = 27M
   static const Uint32 PLL1Div9_ratio = 5;   // VLYNQ divider
   static const Uint32 PLL2_Mult = 17;       // DDR=297 MHz @ 27M input
-#elif defined(DM6467_594MHz)
+#elif defined(DM6467_27MHz_594MHz)
+#define OSC_IN_27MHz
   static const Uint32 PLL1_Mult = 22;       // DSP=594 MHz @ 27M input
   static const Uint32 PLL1Div4_ratio = 6;   // ATA divider
   static const Uint32 PLL1Div8_ratio = 8;   // VPBE = 74.25M @ 594
   static const Uint32 PLL1Div9_ratio = 6;   // VLYNQ divider  
   static const Uint32 PLL2_Mult = 22;       // DDR=297 MHz @ 27M input  
-#elif defined(DM6467_675MHz)
+#elif defined(DM6467_33MHz_594MHz)
+#define OSC_IN_33MHz
+  static const Uint32 PLL1_Mult = 18;       // DSP=594 MHz @ 33M input
+  static const Uint32 PLL1Div4_ratio = 6;   // ATA divider
+  static const Uint32 PLL1Div8_ratio = 8;   // VPBE = 74.25M @ 594
+  static const Uint32 PLL1Div9_ratio = 6;   // VLYNQ divider  
+  static const Uint32 PLL2_Mult = 18;       // DDR=297 MHz @ 33M input  
+#elif defined(DM6467_27MHz_675MHz)
+#define OSC_IN_27MHz
   static const Uint32 PLL1_Mult = 25;       // DSP=675 MHz @ 27M input
   static const Uint32 PLL1Div4_ratio = 7;   // ATA divider
   static const Uint32 PLL1Div8_ratio = 9;   // VPBE = 75M @ 675
   static const Uint32 PLL1Div9_ratio = 7;   // VLYNQ divider
   static const Uint32 PLL2_Mult = 23;       // DDR=310.5 MHz @ 27M input  
-#elif defined(DM6467_729MHz)
+#elif defined(DM6467_27MHz_729MHz)
+#define OSC_IN_27MHz
   static const Uint32 PLL1_Mult = 27;       // DSP=729 MHz @ 27M input
   static const Uint32 PLL1Div4_ratio = 7;   // ATA divider
   static const Uint32 PLL1Div8_ratio = 10;  // VPBE = 72.9M @ 729
   static const Uint32 PLL1Div9_ratio = 7;   // VLYNQ divider
   static const Uint32 PLL2_Mult = 23;       // DDR=310.5 MHz @ 27M input  
-#elif defined(DM6467_900MHz)
+#elif defined(DM6467_33MHz_729MHz)
+#define OSC_IN_33MHz
+  static const Uint32 PLL1_Mult = 22;       // DSP=729 MHz @ 33M input
+  static const Uint32 PLL1Div4_ratio = 7;   // ATA divider
+  static const Uint32 PLL1Div8_ratio = 10;  // VPBE = 72.9M @ 729
+  static const Uint32 PLL1Div9_ratio = 7;   // VLYNQ divider
+  static const Uint32 PLL2_Mult = 18;       // DDR=297 MHz @ 33M input  
+#elif defined(DM6467_33MHz_900MHz)
+#define OSC_IN_33MHz
   static const Uint32 PLL1_Mult = 27;       // DSP=891-900 MHz @ 33-33.3MHz input
   static const Uint32 PLL1Div4_ratio = 9;   // ATA divider
   static const Uint32 PLL1Div8_ratio = 12;  // VPBE = 74.25M @ 891
   static const Uint32 PLL1Div9_ratio = 9;   // VLYNQ divider
   static const Uint32 PLL2_Mult = 24;       // DDR=400 MHz @ 33.3MHz input
-#elif defined(DM6467_1000MHz)
+#elif defined(DM6467_33MHz_1000MHz)
+#define OSC_IN_33MHz
   static const Uint32 PLL1_Mult = 30;       // DSP=990-1000 MHz @ 33-33.3MHz input
   static const Uint32 PLL1Div4_ratio = 10;  // ATA divider
   static const Uint32 PLL1Div8_ratio = 13;  // VPBE = ~76M @ 1000
   static const Uint32 PLL1Div9_ratio = 10;  // VLYNQ divider
   static const Uint32 PLL2_Mult = 24;       // DDR=400 MHz @ 33.3MHz input  
 #else
+#define OSC_IN_33MHz
   // Use 594 values as defaults
-  static const Uint32 PLL1_Mult = 22;       // DSP=594 MHz @ 27M input
+  static const Uint32 PLL1_Mult = 18;       // DSP=594 MHz @ 33M input
   static const Uint32 PLL1Div4_ratio = 6;   // ATA divider
   static const Uint32 PLL1Div8_ratio = 8;   // VPBE = 74.25 @ 594
   static const Uint32 PLL1Div9_ratio = 6;   // VLYNQ divider
-  static const Uint32 PLL2_Mult = 22;       // DDR=297 MHz @ 27M input
+  static const Uint32 PLL2_Mult = 18;       // DDR=297 MHz @ 33M input
 #endif
 
   static const Uint32 PLL1Div1_ratio = 1;
@@ -239,11 +123,61 @@ extern __FAR__ Uint32 EXTERNAL_RAM_START;
   static const Uint32 PLL2Div2_ratio = 1;
   static const Uint32 PLL2BPDiv_ratio = 2;
 
+#if defined(OSC_IN_27MHz)
+  static const Uint8 DDR_NM = 0;
+  static const Uint8 DDR_CL = 5;
+  static const Uint8 DDR_IBANK = 3;
+  static const Uint8 DDR_PAGESIZE = 2;
+  static const Uint16 DDR_T_RFC = 1275;
+  static const Uint8 DDR_T_RP = 200;
+  static const Uint8 DDR_T_RCD = 200;
+  static const Uint8 DDR_T_WR = 150;
+  static const Uint16 DDR_T_RAS = 450;
+  static const Uint16 DDR_T_RC = 650;
+  static const Uint8 DDR_T_RRD = 100;
+  static const Uint8 DDR_T_WTR = 100;
+  static const Uint32 DDR_T_RASMAX = 700000;
+  static const Uint8 DDR_T_XP = 3;    
+  static const Uint16 DDR_T_XSNR = 1375;
+  static const Uint8 DDR_T_XSRD = 199;
+  static const Uint8 DDR_T_RTP = 75;
+  static const Uint8 DDR_T_CKE = 2;
+  static const Uint16 DDR_RR = 78;
+  static const Uint8 DDR_READ_Latency = 6; 
+#elif defined(OSC_IN_33MHz)
+  static const Uint8 DDR_NM = 0;
+  static const Uint8 DDR_CL = 5;
+  static const Uint8 DDR_IBANK = 3;
+  static const Uint8 DDR_PAGESIZE = 2;
+  static const Uint16 DDR_T_RFC = 1275;
+  static const Uint8 DDR_T_RP = 125;
+  static const Uint8 DDR_T_RCD = 125;
+  static const Uint8 DDR_T_WR = 150;
+  static const Uint16 DDR_T_RAS = 450;
+  static const Uint16 DDR_T_RC = 575;
+  static const Uint8 DDR_T_RRD = 100;
+  static const Uint8 DDR_T_WTR = 75;
+  static const Uint32 DDR_T_RASMAX = 700000;
+  static const Uint8 DDR_T_XP = 3;
+  static const Uint16 DDR_T_XSNR = 1375;
+  static const Uint8 DDR_T_XSRD = 199;
+  static const Uint8 DDR_T_RTP = 75;
+  static const Uint8 DDR_T_CKE = 2;
+  static const Uint8 DDR_RR = 78;
+  static const Uint8 DDR_READ_Latency = 6; 
+#else
+#error OSC_IN should be defined
+#endif
+
 /************************************************************
 * Global Variable Definitions                               *
 ************************************************************/
 
+#if defined(OSC_IN_27MHz)
 const String devString = "DM646x";
+#elif defined(OSC_IN_33MHz)
+const String devString = "DM646x-T";
+#endif
 
 
 /************************************************************
@@ -294,8 +228,18 @@ Uint32 DEVICE_init()
   if (status == E_PASS) status |= DEVICE_PLL2Init();
   
   // DDR2 module setup
-  if (status == E_PASS) status |= DEVICE_DDR2Init();
+  if (status == E_PASS)
+#if defined(DM6467_27MHz_594MHz) || defined(DM6467_33MHz_594MHz) || \
+    defined(DM6467_33MHz_729MHz)
+    status |= DEVICE_DDR2Init(297);
+#elif defined(DM6467_27MHz_675MHz) || defined(DM6467_27MHz_729MHz)
+    status |= DEVICE_DDR2Init(311);
+#elif defined(DM6467_33MHz_1000MHz)
+    status |= DEVICE_DDR2Init(396);
+#else
+    status |= DEVICE_DDR2Init(297);
 #endif
+#endif /* SKIP_LOW_LEVEL_INIT */
       
   // AEMIF Setup (if not PCIEN)
   if ((SYSTEM->BOOTCFG & 0x00010000 ) == 0x0)
@@ -515,11 +459,28 @@ Uint32 DEVICE_PLL2Init()
   return E_PASS;
 }
 
+Uint32 DDR_Get_Val(Uint32 parm, Uint32 freq)
+{
+	Uint32 result;
 
-Uint32 DEVICE_DDR2Init()
+	result = ((parm * freq) / 10000) - 1;
+
+	/*
+	 * Check if value calculated from formula results in decimal.
+	 * If yes round off to next decimal, as the value to be
+	 * written to register should be >= calculated value.
+	 */
+	if((parm * freq) % 10000)
+		result++;
+
+	return result;
+}
+
+Uint32 DEVICE_DDR2Init(Uint32 freq)
 { 
   VUint32 tempVal;
   VUint32 *ddrStart = (VUint32 *) &(EXTERNAL_RAM_START);
+  Uint32 tRFC, tRP, tRCD, tWR, tRAS, tRC, tRRD, tWTR;
   
   // Set the DDR2 to enable
   DEVICE_LPSCTransition(LPSC_DDR2,PD0,PSC_ENABLE);
@@ -556,31 +517,40 @@ Uint32 DEVICE_DDR2Init()
                 (DDR_CL << 9)    |
                 (DDR_IBANK << 4) |
                 (DDR_PAGESIZE <<0);
-  
+ 
+  tRFC = DDR_Get_Val(DDR_T_RFC, freq);
+  tRP  = DDR_Get_Val(DDR_T_RP, freq);
+  tRCD = DDR_Get_Val(DDR_T_RCD, freq);
+  tWR  = DDR_Get_Val(DDR_T_WR, freq);
+  tRAS = DDR_Get_Val(DDR_T_RAS, freq);
+  tRC  = DDR_Get_Val(DDR_T_RC, freq);
+  tRRD = DDR_Get_Val(DDR_T_RRD, freq);
+  tWTR = DDR_Get_Val(DDR_T_WTR, freq);
+ 
   // Program timing registers 
   //DDR->SDTIMR = 0x4B245C12;
-  DDR->SDTIMR =   (DDR_T_RFC << 25) |              
-                  (DDR_T_RP << 22)  |
-                  (DDR_T_RCD << 19) |
-                  (DDR_T_WR << 16)  |
-                  (DDR_T_RAS << 11) |
-                  (DDR_T_RC << 6)   |
-                  (DDR_T_RRD << 3)  |
-                  (DDR_T_WTR << 0);
+  DDR->SDTIMR =   tRFC << 25	|              
+                  tRP  << 22	|
+                  tRCD << 19	|
+                  tWR  << 16	|
+                  tRAS << 11	|
+                  tRC  << 6	|
+                  tRRD << 3	|
+                  tWTR << 0;
                   
   //DDR->SDTIMR2 = 0x3B2BC742;
-  DDR->SDTIMR2 =  (DDR_T_RASMAX << 27) |
+  DDR->SDTIMR2 =  ((DDR_T_RASMAX / (DDR_RR * freq)) << 27) |
                   (DDR_T_XP << 25 )    |
-                  (DDR_T_XSNR << 16)   |
+                  (((DDR_T_XSNR * freq) / 10000) << 16)   |
                   (DDR_T_XSRD << 8)    |
-                  (DDR_T_RTP << 5)     |
+                  (((DDR_T_RTP * freq) / 10000) << 5)     |
                   (DDR_T_CKE << 0);
 
   // Clear the BOOTUNLOCK and TIMUNLOCK bit 
   DDR->SDBCR &= (~0x00808000);
   
   // Set the refresh rate
-  DDR->SDRCR = DDR_RR;
+  DDR->SDRCR = (DDR_RR * freq) / 10;
   
   // Dummy write/read to apply timing settings
   *ddrStart = DEVICE_DDR2_TEST_PATTERN;   // Write

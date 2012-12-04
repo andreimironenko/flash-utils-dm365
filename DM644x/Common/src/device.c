@@ -69,6 +69,30 @@ extern __FAR__ Uint32 EXTERNAL_RAM_START;
     static const Uint32 PLL2_Mult = 20;
     static const Uint32 PLL2_Div1 = 10;
     static const Uint32 PLL2_Div2 = 2;
+#elif defined(DM644x_810MHz)
+    //// For Micron MT47H64M16BT-37E @ 189 MHz
+    static const Uint8 DDR_NM = 0;
+    static const Uint8 DDR_CL = 3;
+    static const Uint8 DDR_IBANK = 3;
+    static const Uint8 DDR_PAGESIZE = 2;
+    static const Uint8 DDR_T_RFC = 20;
+    static const Uint8 DDR_T_RP = 2;
+    static const Uint8 DDR_T_RCD = 2;
+    static const Uint8 DDR_T_WR = 2;
+    static const Uint8 DDR_T_RAS = 6;
+    static const Uint8 DDR_T_RC = 8;
+    static const Uint8 DDR_T_RRD = 2;
+    static const Uint8 DDR_T_WTR = 1;
+    static const Uint8 DDR_T_XSNR = 22;
+    static const Uint8 DDR_T_XSRD = 199;
+    static const Uint8 DDR_T_RTP = 1;
+    static const Uint8 DDR_T_CKE = 2;
+    static const Uint16 DDR_RR = 1229;
+    static const Uint8 DDR_READ_Latency = 5; 
+    
+    static const Uint32 PLL2_Mult = 28;
+    static const Uint32 PLL2_Div1 = 14;
+    static const Uint32 PLL2_Div2 = 2;
 #else
     // For Micron MT47H64M16BT-37E @ 162 MHz
     static const Uint8 DDR_NM = 0;
@@ -99,6 +123,8 @@ extern __FAR__ Uint32 EXTERNAL_RAM_START;
     static const Uint32 PLL1_Mult = 15;  // DSP=405 MHz
 #elif defined(DM6441)
     static const Uint32 PLL1_Mult = 19;  // DSP=513 MHz  
+#elif defined(DM644x_810MHz)
+    static const Uint32 PLL1_Mult = 30;  // DSP=810 MHz
 #else
     static const Uint32 PLL1_Mult = 22;  // DSP=594 MHz
 #endif   
@@ -111,6 +137,8 @@ extern __FAR__ Uint32 EXTERNAL_RAM_START;
   const String devString = "DM6441_LV";
 #elif defined(DM6441)
   const String devString = "DM6441";
+#elif defined(DM644x_810MHz)
+  const String devString = "DM644x_810MHz";
 #else
   const String devString = "DM644x";
 #endif     

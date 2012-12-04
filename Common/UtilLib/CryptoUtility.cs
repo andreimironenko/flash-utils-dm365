@@ -31,25 +31,9 @@ namespace UtilLib.Crypto
       
       if( fileStr.StartsWith(PEMStartString+PEMPubString) && fileStr.EndsWith(PEMEndString+PEMPubString) )
       {
-        // Unencrypted Private Key PEM file
-        byte[] keyBlob = null;
-        
+        // Public Key PEM file
         Console.WriteLine("Reading PEM public key from file {0}...", fileName);
-        fileStr = TrimPEMData(fileStr);
-        try
-        {
-          // Get binary data from Base64 string
-          keyBlob = Convert.FromBase64String (fileStr);
-
-          // Convert binary data to ASN.1 Sequence object and then parse the sequence
-          // into RSAPrivateKey Components, then use to create an RSA CSP object.
-          return ParseRSAPublicKey(new Asn1Sequence(keyBlob));
-        }
-        catch(FormatException )
-        {
-          Console.WriteLine("Error in the PEM data!");
-          return null;
-        }
+        return null;
       }
       else if( fileStr.StartsWith(PEMStartString+PEMPrivString) && fileStr.EndsWith(PEMEndString+PEMPrivString) )
       {
@@ -209,50 +193,7 @@ namespace UtilLib.Crypto
         return null;
       }
     }
-    
-    
-    public static RSACryptoServiceProvider ParseRSAPublicKey(Asn1Sequence RSAPublicKey)
-    {
-      Byte[][] RSAPublicKeyData;
-      
-      RSAParameters RSAParams = new RSAParameters();
 
-      if (RSAPublicKey.SequenceLength != 2)
-      {
-        throw new ArgumentException("ASN.1 Sequence has wrong number of elements for RSAPublicKey.");
-      }
-        
-      RSAPublicKeyData = new Byte[RSAPublicKey.SequenceLength][];
-      
-      for(int i=0; i<RSAPublicKey.SequenceLength; i++)
-      {
-        RSAPublicKeyData[i] = RSAPublicKey[i].ContentsToArray();
-        
-        // Trim leading zeros if any
-        if ( (RSAPublicKeyData[i][0] == 0x00) && (RSAPublicKeyData[i].Length > 1) )
-        {
-          Byte[] temp = new Byte[RSAPublicKeyData[i].Length - 1];
-          Array.Copy(RSAPublicKeyData[i],1,temp,0,RSAPublicKeyData[i].Length - 1);
-          RSAPublicKeyData[i] = temp;
-        }
-      }
-      
-      RSAParams.Modulus     = RSAPublicKeyData[0];
-      RSAParams.Exponent    = RSAPublicKeyData[1];
-
-      // Import the params into the RSA CSP
-      try
-      {
-        RSACryptoServiceProvider RSA = new RSACryptoServiceProvider();
-        RSA.ImportParameters(RSAParams);
-        return RSA;
-      }
-      catch
-      {
-        return null;
-      }
-    }
-    
     
     public static RSACryptoServiceProvider LoadFromFile(String fileName)
     {
@@ -273,8 +214,7 @@ namespace UtilLib.Crypto
       
       return retVal;
     }
-
-
+    
     public static Byte[] CreateCustomSecureKeyVerifyStruct(RSA rsa)
     {
       Int32 modSizeInBytes = (rsa.KeySize >> 3);

@@ -118,7 +118,7 @@ namespace AISGenLib
     
     // Encrypted Section List
     public String[] sectionsToEncrypt;
-  
+	
     // Debug info for keeping track of signatures
     public int signatureByteCnt;
     public int signatureCnt;
@@ -649,9 +649,6 @@ namespace AISGenLib
         // Calculate the SHA hash of the Root Public Key
         Byte[] digest = devAISGen.currHashAlgorithm.ComputeHash(secureKeyData);
         
-        // Write the full hash of the RPK struct
-        FileIO.SetFileData("rpk_hash_full.bin",digest,true);
-        
       #if (!OLD_MPK_METHOD)
         for (int i=16;i<digest.Length;i++)
         {
@@ -866,14 +863,7 @@ namespace AISGenLib
             Hashtable sym = AISExtrasCF.symFind("_" + devAISGen.AISExtraFunc[i].funcName);
             devAISGen.AISExtraFunc[i].funcAddr = (UInt32)sym["value"];
             sym = AISExtrasCF.symFind(".params");
-            if (sym == null)
-            {
-              devAISGen.AISExtraFunc[i].paramAddr = 0;
-            }
-            else
-            {
-              devAISGen.AISExtraFunc[i].paramAddr = (UInt32)sym["value"];
-            }
+            devAISGen.AISExtraFunc[i].paramAddr = (UInt32)sym["value"];
           }
 
           // If the bootMode is UART we need the UARTSendDONE function
@@ -997,7 +987,7 @@ namespace AISGenLib
           // Write AIS opcode
           tempAIS_bw.Write((UInt32)AIS.SetSecExitMode);
           sig_bw.Write((UInt32)AIS.SetSecExitMode);
-              
+  		        
           // Write exit type
           tempAIS_bw.Write((UInt32)devAISGen.bootLoaderExitType);
           sig_bw.Write((UInt32)devAISGen.bootLoaderExitType);
@@ -1036,11 +1026,11 @@ namespace AISGenLib
               tempAIS_bw.Write((UInt32)AIS.FunctionExec);
               sig_bw.Write((UInt32)AIS.FunctionExec);
               devAISGen.signatureByteCnt += 4;
-        
+  			
               tempAIS_bw.Write((((UInt32)devAISGen.ROMFunc[i].numParams) << 16) + ((UInt32)funcIndex));
               sig_bw.Write((((UInt32)devAISGen.ROMFunc[i].numParams) << 16) + ((UInt32)funcIndex));
               devAISGen.signatureByteCnt += 4;
-        
+  			
               // Write Paramter values read from INI file
               for (Int32 k = 0; k < devAISGen.ROMFunc[i].numParams; k++)
               {
@@ -1110,9 +1100,6 @@ namespace AISGenLib
             {
               for (UInt32 j = 0; j < iniSecs.Length; j++)
               {
-                //Console.WriteLine( devAISGen.AISExtraFunc[i].iniSectionName );
-                //Console.WriteLine( iniSecs[j].iniSectionName );
-                
                 if (iniSecs[j].iniSectionName.Equals(devAISGen.AISExtraFunc[i].iniSectionName))
                 {
                   for (UInt32 k = 0; k < devAISGen.AISExtraFunc[i].numParams; k++)
@@ -1120,7 +1107,7 @@ namespace AISGenLib
                     // Write SET command
                     tempAIS_bw.Write((UInt32)AIS.Set);
                     sig_bw.Write((UInt32)AIS.Set);
-                              
+  				                    
                     //Write type field (32-bit only)
                     tempAIS_bw.Write((UInt32)0x3);
                     sig_bw.Write((UInt32)0x3);
@@ -1830,7 +1817,7 @@ namespace AISGenLib
             
             sig_bw.Write((UInt32)AIS.Jump);
             sig_bw.Write((UInt32)devAISGen.UARTSendDONEAddr);
-      
+			
             devAISGen.signatureByteCnt += 8;
             
             SecureAISInsertSignature(devAISGen.signatureStream,devAISGen);

@@ -286,6 +286,38 @@ Uint32 UTIL_hammingECC(Uint8 *data, Uint16 cnt)
 }
 #endif
 
+Uint32 div (Uint32 v, Uint32 d)
+{
+  Uint32 counter = 0;
+ 
+ if(v < d || d == 0) 
+   return 0;
+  
+  while(v >= d)
+  {
+    v -= d;
+    counter ++;
+  }
+
+ return counter;
+}
+
+Uint32 mod (Uint32 v, Uint32 d)
+{
+ 
+ if(v < d || d == 0) 
+   return 0;
+  
+  while(v >= d)
+  {
+    v -= d;
+  }
+
+ return v;
+}
+
+
+
 /***********************************************************
 * Local Function Definitions                               *
 ***********************************************************/

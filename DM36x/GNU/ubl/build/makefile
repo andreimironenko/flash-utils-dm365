@@ -12,7 +12,8 @@ include ../../device.mak
 
 PROGRAM:=ubl
 
-CROSSCOMPILE=arm-none-linux-gnueabi-
+#CROSSCOMPILE=arm-none-linux-gnueabi-
+CROSSCOMPILE=$(CROSS_COMPILE)
 CC=$(CROSSCOMPILE)gcc
 OBJCOPY=$(CROSSCOMPILE)objcopy
 OBJDUMP=$(CROSSCOMPILE)objdump
@@ -21,7 +22,9 @@ OBJCOPYFLAGS = --gap-fill 0xFF -S
 SOURCES=$(PROGRAM).c boot.c selfcopy.c uartboot.c device.c debug.c uart.c util.c
 ENTRYPOINT=boot
 
-CFLAGS:=-c -Os -Wall -ffreestanding -I../../../Common/include -I../../../../Common/include -I../../../../Common/arch/arm926ejs/include -I../../../../Common/$(PROGRAM)/include -I../../../../Common/drivers/include -I../../../../Common/gnu/include 
+CFLAGS:=-c -Os -Wall -ffreestanding -I../../../Common/include -I../../../../Common/include -I../../../../Common/arch/arm926ejs/include -I../../../../Common/$(PROGRAM)/include -I../../../../Common/drivers/include -I../../../../Common/gnu/include
+
+ 
 ifeq ($(TYPE),nand)
 	CFLAGS+= -DUBL_NAND
   SOURCES+= nand.c nandboot.c device_nand.c
@@ -35,8 +38,34 @@ ifeq ($(TYPE),sdmmc)
   SOURCES+= sdmmc.c sdmmcboot.c
 endif
 
+#Set up the required clocks
+ifeq ($(CLOCKS),ARM297_DDR270_OSC24)
+  CFLAGS += -DARM297_DDR270_OSC24
+endif
+
+ifeq ($(CLOCKS),ARM270_DDR216_OSC24)
+  CFLAGS += -DARM270_DDR216_OSC24
+endif
+
+ifeq ($(CLOCKS),ARM297_DDR277_OSC27)
+  CFLAGS += -DARM297_DDR277_OSC27
+endif
+
+ifeq ($(CLOCKS),ARM216_DDR173_OSC19P2)
+  CFLAGS += -DARM216_DDR173_OSC19P2
+endif
+
+ifeq ($(CLOCKS),ARM216_DDR173_OSC24)
+  CFLAGS += -DARM216_DDR173_OSC24
+endif
+
+ifeq ($(CLOCKS),ARM432_DDR340_OSC24)
+  CFLAGS += -DARM432_DDR340_OSC24
+endif
+
+
 OBJECTS:=$(patsubst %.c,%_$(TYPE).o,$(SOURCES))
-EXECUTABLE:=$(PROGRAM)_$(DEVSTRING)_$(TYPE)
+EXECUTABLE:=$(PROGRAM)_$(DEVSTRING)_$(TYPE)_$(CLOCKS)
 BINARY:=../$(EXECUTABLE).bin
 LINKERSCRIPT=../$(PROGRAM).lds
 

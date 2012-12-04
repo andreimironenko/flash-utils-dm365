@@ -9,7 +9,7 @@ DEVSTRING:=C642x
 MONOCOMPILE=gmcs
 DOTNETCOMPILE=csc
 LOCALSOURCES=$(PROGRAM).cs
-REMOTESOURCES=device_name.cs AISGen_$(DEVSTRING).cs Ini.cs CRC32.cs Endian.cs EmbeddedFileIO.cs Debug.cs COFF.cs HexConv.cs AISGen.cs SerialIO.cs
+REMOTESOURCES=device_name.cs AISGen_$(DEVSTRING).cs CRC32.cs Endian.cs EmbeddedFileIO.cs Debug.cs COFF.cs SRecord.cs AISGen.cs 
 
 OBJECTS:=$(patsubst %.cs,%.module,$(REMOTESOURCES))
 EXECUTABLE:=../$(PROGRAM)_$(DEVSTRING).exe
@@ -36,9 +36,9 @@ clean:
 
 $(EXECUTABLE): $(LOCALSOURCES) $(OBJECTS) $(AISEXTRAIMAGE) $(REMOTESOURCES) 
 ifeq ($(shell uname),Linux)
-		@$(MONOCOMPILE) -t:exe -resource:$(AISEXTRAIMAGE) -out:$(EXECUTABLE) $(LOCALSOURCES) $(OBJECTS)
+		@$(MONOCOMPILE) -t:exe -resource:$(AISEXTRAIMAGE) -define:$(DEVSTRING) -out:$(EXECUTABLE) $(LOCALSOURCES) $(OBJECTS)
 else
-		@$(DOTNETCOMPILE) /t:exe /resource:$(AISEXTRAIMAGE) /out:$(EXECUTABLE) /win32icon:$(ICON) $(LOCALSOURCES) $(OBJECTS)
+		@$(DOTNETCOMPILE) /t:exe /resource:$(AISEXTRAIMAGE) /define:$(DEVSTRING) /out:$(EXECUTABLE) /win32icon:$(ICON) $(LOCALSOURCES) $(OBJECTS)
 endif
 
 %.module: %.cs

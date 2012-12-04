@@ -1,7 +1,9 @@
+-l rtsv4_A_le_eabi_eh.lib
+
 -e boot
 
 EMIFStart  = 0x42000000;
-EMIFSize   = 0x02000000; 
+EMIFSize   = 0x02000000;
 IRAMStart  = 0x00000000;
 IRAMSize   = 0x00008000;
 

@@ -19,11 +19,10 @@ extern far "c" {
 * Global Macro Declarations                                 *
 ************************************************************/
 
-#define SPI_SPIFLG_TXINTFLAG     (0x00000200u)
-#define SPI_SPIFLG_RXINTFLAG     (0x00000100u)
-#define SPI_SPIFLG_OVRNINTFLG    (0x00000040u)
-#define SPI_SPIFLG_BITERRFLG     (0x00000010u)
-#define SPI_SPIFLG_DESELECTFLG   (0x00000004u)            // SPI_PARERRFLG
+#define SPI_RXINTFLAG     (0x00000100u)
+#define SPI_OVRNINTFLG    (0x00000040u)
+#define SPI_BITERRFLG     (0x00000010u)
+#define SPI_DESELECTFLG   (0x00000004u)            // SPI_PARERRFLG
 
 
 /***********************************************************
@@ -55,38 +54,31 @@ typedef struct _SPI_CONFIG_
   Uint8 prescalar;
   Uint8 charLen;
 }
-SPI_ConfigObj, *SPI_ConfigHandle;
+SPI_Config;
 
 // SPI driver structure
 typedef struct _SPI_INFO_
 {
-  Uint32            peripheralNum;
-  void              *regs;
-  SPI_Role          role;
-  SPI_Mode          mode;
-  SPI_ConfigHandle  config;
+  Uint32      peripheralNum;
+  void        *regs;
+  SPI_Role    role;
+  SPI_Mode    mode;
+  SPI_Config  *config;
 }
 SPI_InfoObj, *SPI_InfoHandle;
-
-/***********************************************************
-* Global Variable declarations                             *
-***********************************************************/
-
-extern __FAR__ SPI_ConfigHandle const hDEFAULT_SPI_CONFIG;
 
 
 /************************************************************
 * Global Function Declarations                              *
 ************************************************************/
 
-extern __FAR__ SPI_InfoHandle SPI_open(Uint32 spiPeripheralNum, SPI_Role role, SPI_Mode mode, SPI_ConfigHandle config);
-extern __FAR__ Uint32 SPI_reset(SPI_InfoHandle hSPIInfo);
-extern __FAR__ Uint32 SPI_readBytes(SPI_InfoHandle hSPIInfo, Uint32 byteCnt, Uint8 *dest);
-extern __FAR__ Uint32 SPI_writeBytes(SPI_InfoHandle hSPIInfo, Uint32 byteCnt, Uint8 *src);
-extern __FAR__ Uint32 SPI_xferBytes(SPI_InfoHandle hSPIInfo, Uint32 byteCnt, Uint8 *src);
-extern __FAR__ Uint8  SPI_xferOneChar(SPI_InfoHandle hSPIInfo, Uint8 dataOut);
-extern __FAR__ void   SPI_enableCS(SPI_InfoHandle hSPIInfo);
-extern __FAR__ void   SPI_disableCS(SPI_InfoHandle hSPIInfo);
+extern SPI_InfoHandle SPI_open(Uint32 spiPeripheralNum, SPI_Role role, SPI_Mode mode, SPI_Config *config);
+extern Uint32 SPI_reset(SPI_InfoHandle hSPIInfo);
+extern Uint32 SPI_readBytes(SPI_InfoHandle hSPIInfo, Uint32 byteCnt, Uint8 *dest);
+extern Uint32 SPI_writeBytes(SPI_InfoHandle hSPIInfo, Uint32 byteCnt, Uint8 *src);
+extern Uint32 SPI_xferOneChar(SPI_InfoHandle hSPIInfo, Uint32 dataOut);
+extern void SPI_enableCS(SPI_InfoHandle hSPIInfo);
+extern void SPI_disableCS(SPI_InfoHandle hSPIInfo);
 
 
 /***********************************************************

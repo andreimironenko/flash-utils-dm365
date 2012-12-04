@@ -1,9 +1,9 @@
 #############################################################
-# Makefile for NANDErase program                            #
+# Makefile for DM644x_NANDWriter program for the DM644x     #
 #############################################################
 # Auth: Daniel Allred
 #	    
-PROGRAM:=NANDEraser
+PROGRAM:=NANDWriter
 
 PROJECTFILE=$(PROGRAM).pjt
 EXECUTABLE=./Debug/$(PROGRAM).out

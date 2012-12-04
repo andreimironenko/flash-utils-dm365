@@ -1,11 +1,13 @@
 #############################################################
-# Makefile for UBL CCS project(s).                          #
+# Makefile for UBL CCS project.                             #
 #############################################################
+# Auth: Daniel Allred
+# Vers: v1.00 on 29-Jan-2008
 #	    
 PROGRAM:=UBL
-DEVSTRING:=DM36x
-FLASHTYPES=NAND NOR SPI
-SPIBIN=./$(PROGRAM)_$(DEVSTRING)_SPI.bin
+DEVSTRING:=DM35x
+
+PROJECTFILE=$(PROGRAM).pjt
 NANDBIN=./$(PROGRAM)_$(DEVSTRING)_NAND.bin
 NORBIN=./$(PROGRAM)_$(DEVSTRING)_NOR.bin
 
@@ -13,14 +15,13 @@ NORBIN=./$(PROGRAM)_$(DEVSTRING)_NOR.bin
 # Target definitions
 .PHONY : all clean
 all: 
-		timake $(PROGRAM)_nandboot.pjt BOOT_NAND
-		timake $(PROGRAM)_norboot.pjt BOOT_NOR
-		timake $(PROGRAM)_spiboot.pjt BOOT_SPI
+		timake $(PROJECTFILE) BOOT_NAND
+		timake $(PROJECTFILE) BOOT_NOR
 
 clean:
-		timake $(PROGRAM)_nandboot.pjt BOOT_NAND -clean
-		timake $(PROGRAM)_norboot.pjt BOOT_NOR -clean
-		timake $(PROGRAM)_spiboot.pjt BOOT_SPI -clean
-		rm -f $(NANDBIN) $(NORBIN) $(SPIBIN)
+		timake $(PROJECTFILE) BOOT_NAND -clean
+		timake $(PROJECTFILE) BOOT_NOR -clean
+		rm -f $(NANDBIN)
+		rm -f $(NORBIN)
 
 

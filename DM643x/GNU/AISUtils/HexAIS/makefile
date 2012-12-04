@@ -9,7 +9,7 @@ DEVSTRING:=DM643x
 MONOCOMPILE=gmcs
 DOTNETCOMPILE=csc
 LOCALSOURCES=$(PROGRAM).cs
-REMOTESOURCES=device_name.cs AISGen_$(DEVSTRING).cs Ini.cs CRC32.cs Endian.cs EmbeddedFileIO.cs Debug.cs COFF.cs HexConv.cs AISGen.cs SerialIO.cs
+REMOTESOURCES=device_name.cs AISGen_$(DEVSTRING).cs CRC32.cs Endian.cs EmbeddedFileIO.cs Debug.cs COFF.cs SRecord.cs AISGen.cs 
 
 OBJECTS:=$(patsubst %.cs,%.module,$(REMOTESOURCES))
 EXECUTABLE:=../$(PROGRAM)_$(DEVSTRING).exe

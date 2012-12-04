@@ -524,7 +524,7 @@ extern Uint32 DEVICE_EMIFInit(void);
 extern Uint32 DEVICE_I2C0Init(void);
 extern Uint32 DEVICE_PLL2Init(void);
 extern Uint32 DEVICE_PLL1Init(void);
-extern Uint32 DEVICE_DDR2Init(void);
+extern Uint32 DEVICE_DDR2Init(Uint32 freq);
 extern Uint32 DEVICE_I2C0Reset();
 
 // Device boot status functions

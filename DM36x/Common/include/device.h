@@ -294,7 +294,7 @@ DEVICE_PSCRegs;
 #define LPSC_UART0          (19)
 #define LPSC_UART1          (20)
 #define LPSC_UHPI          	(21)
-#define LPSC_SPI0           (22)
+#define LPSC_SPIO           (22)
 #define LPSC_PWM0           (23)
 #define LPSC_PWM1           (24)
 #define LPSC_PWM2           (25)
@@ -520,42 +520,83 @@ DEVICE_I2CRegs;
 
 #define I2C_ICEMDR_EXTMODE      (0x00000000)
 
-typedef struct _DEVICE_SPI_REGS_
+
+
+typedef struct _DEVICE_SDMMC_REGS_
 {
-  VUint32 SPIGCR0;          // 0x00
-  VUint32 SPIGCR1;          // 0x04
-  VUint32 SPIINT;           // 0x08
-  VUint32 SPILVL;           // 0x0C
-  VUint32 SPIFLG;           // 0x10
-  VUint32 SPIPC0;           // 0x14
-  VUint32 SPIPC1;           // 0x18
-  VUint32 SPIPC2;           // 0x1C
-  VUint32 SPIPC3;           // 0x20
-  VUint32 SPIPC4;           // 0x24
-  VUint32 SPIPC5;           // 0x28
-  VUint32 SPIPC6;           // 0x2C
-  VUint32 SPIPC7;           // 0x30
-  VUint32 SPIPC8;           // 0x34
-  VUint32 SPIDAT[2];        // 0x38
-  VUint32 SPIBUF;           // 0x40
-  VUint32 SPIEMU;           // 0x44
-  VUint32 SPIDELAY;         // 0x48
-  VUint32 SPIDEF;           // 0x4C
-  VUint32 SPIFMT[4];        // 0x50
-  VUint32 TGINTVEC[2];      // 0x60
-  VUint32 RSVD0[2];         // 0x68
-  VUint32 MIBSPIE;          // 0x70
-}
-DEVICE_SPIRegs;
+    volatile Uint16 MMCCTL;
+    volatile Uint8 RSVD0[2];
+    volatile Uint16 MMCCLK;
+    volatile Uint8 RSVD1[2];
+    volatile Uint16 MMCST0;
+    volatile Uint8 RSVD2[2];
+    volatile Uint16 MMCST1;
+    volatile Uint8 RSVD3[2];
+    volatile Uint16 MMCIM;
+    volatile Uint8 RSVD4[2];
+    volatile Uint16 MMCTOR;
+    volatile Uint8 RSVD5[2];
+    volatile Uint16 MMCTOD;
+    volatile Uint8 RSVD6[2];
+    volatile Uint16 MMCBLEN;
+    volatile Uint8 RSVD7[2];
+    volatile Uint16 MMCNBLK;
+    volatile Uint8 RSVD8[2];
+    volatile Uint16 MMCNBLC;
+    volatile Uint8 RSVD9[2];
+    volatile Uint32 MMCDRR;
+    volatile Uint32 MMCDXR;
+    volatile Uint32 MMCCMD;
+    volatile Uint32 MMCARGHL;
+    volatile Uint32 MMCRSP01;
+    volatile Uint32 MMCRSP23;
+    volatile Uint32 MMCRSP45;
+    volatile Uint32 MMCRSP67;
+    volatile Uint16 MMCDRSP;
+    volatile Uint8 RSVD10[2];
+    volatile Uint16 MMCETOK;
+    volatile Uint8 RSVD11[2];
+    volatile Uint16 MMCCIDX;
+    volatile Uint8 RSVD12[2];
+    volatile Uint16 MMCCKC;
+    volatile Uint8 RSVD13[2];
+    volatile Uint16 MMCTORC;
+    volatile Uint8 RSVD14[2];
+    volatile Uint16 MMCTODC;
+    volatile Uint8 RSVD15[2];
+    volatile Uint16 MMCBLNC;
+    volatile Uint8 RSVD16[2];
+    volatile Uint16 SDIOCTL;
+    volatile Uint8 RSVD17[2];
+    volatile Uint16 SDIOST0;
+    volatile Uint8 RSVD18[2];
+    volatile Uint16 SDIOIEN;
+    volatile Uint8 RSVD19[2];
+    volatile Uint16 SDIOIST;
+    volatile Uint8 RSVD20[2];
+    volatile Uint16 MMCFIFOCTL;
+} 
+DEVICE_SDMMCRegs;
 
-#define SPI0 ((DEVICE_SPIRegs *) 0x01C66000u)
-#define SPI1 ((DEVICE_SPIRegs *) 0x01C66800u)
-#define SPI2 ((DEVICE_SPIRegs *) 0x01C67800u)
-#define SPI3 ((DEVICE_SPIRegs *) 0x01C68000u)
-#define SPI4 ((DEVICE_SPIRegs *) 0x01C23000u)
+#define SDMMC ((DEVICE_SDMMCRegs*) 0x1D11000)
+//0x01C40000
+#define SDMMC_PERIPHERAL_CNT      (1)
 
-#define SPI_PERIPHERAL_CNT      (5)
+#define DEVICE_SDMMC_MMCST0_DXRDY_MASK      (0x0200u)
+#define DEVICE_SDMMC_MMCST0_DXRDY_SHIFT     (0x0009u)
+#define DEVICE_SDMMC_MMCST0_DXRDY_RESETVAL  (0x0001u)
 
+#define DEVICE_SDMMC_MMCFIFOCTL_FIFODIR_MASK (0x0002u)
+#define DEVICE_SDMMC_MMCFIFOCTL_FIFODIR_SHIFT (0x0001u)
+#define DEVICE_SDMMC_MMCFIFOCTL_FIFODIR_RESETVAL (0x0000u)
+
+/*----FIFODIR Tokens----*/
+#define DEVICE_SDMMC_MMCFIFOCTL_FIFODIR_READ (0x0000u)
+#define DEVICE_SDMMC_MMCFIFOCTL_FIFODIR_WRITE (0x0001u)
+
+#define DEVICE_SDMMC_MMCFIFOCTL_FIFORST_MASK (0x0001u)
+#define DEVICE_SDMMC_MMCFIFOCTL_FIFORST_SHIFT (0x0000u)
+#define DEVICE_SDMMC_MMCFIFOCTL_FIFORST_RESETVAL (0x0000u)
 
 
 /***********************************************************
@@ -563,34 +604,35 @@ DEVICE_SPIRegs;
 ***********************************************************/
 
 // Execute LPSC state transition
-extern __FAR__ void     DEVICE_LPSCTransition(Uint8 module, Uint8 domain, Uint8 state);
-extern __FAR__ void     DEVICE_PSCInit();
+void    DEVICE_LPSCTransition(Uint8 module, Uint8 domain, Uint8 state);
+void    DEVICE_PSCInit();
 
 // Pinmux control function
-extern __FAR__ void     DEVICE_pinmuxControl(Uint32 regOffset, Uint32 mask, Uint32 value);
+void    DEVICE_pinmuxControl(Uint32 regOffset, Uint32 mask, Uint32 value);
 
 // Initialization prototypes
-extern __FAR__ Uint32   DEVICE_init(void);
-extern __FAR__ Uint32   DEVICE_UART0Init(void);
-extern __FAR__ Uint32   DEVICE_TIMER0Init(void);
-extern __FAR__ Uint32   DEVICE_EMIFInit(void);
-extern __FAR__ Uint32   DEVICE_I2C0Init(void);
-extern __FAR__ Uint32   DEVICE_PLL2Init(void);
-extern __FAR__ Uint32   DEVICE_PLL1Init(Uint32 PllMult);
-extern __FAR__ Uint32   DEVICE_DDR2Init(void);
-extern __FAR__ Uint32   DEVICE_I2C0Reset();
-extern __FAR__ void     VPSS_SYNC_RESET();
-extern __FAR__ void     POR_RESET();
-extern __FAR__ Uint32   DEVICE_SPIInit(Uint8 periphNum);
+Uint32  DEVICE_init(void);
+Uint32  DEVICE_UART0Init(void);
+Uint32  DEVICE_TIMER0Init(void);
+Uint32  DEVICE_EMIFInit(void);
+Uint32  DEVICE_I2C0Init(void);
+Uint32  DEVICE_PLL2Init();
+Uint32  DEVICE_DDR2Init();
+Uint32  DEVICE_PLL1Init();//Uses and Oscillator of 24 MHz
+
+Uint32  DEVICE_I2C0Reset();
+void VPSS_SYNC_RESET();
+void POR_RESET();
+void WDT_RESET();
+void WDT_FLAG_ON();
 
 // Device boot status functions
-extern __FAR__ DEVICE_BootMode   DEVICE_bootMode( void );
-extern __FAR__ DEVICE_BusWidth   DEVICE_emifBusWidth( void );
+DEVICE_BootMode   DEVICE_bootMode( void );
+DEVICE_BusWidth   DEVICE_emifBusWidth( void );
 
-// Timer0 util functions
-extern __FAR__ void     DEVICE_TIMER0Start(void);
-extern __FAR__ void     DEVICE_TIMER0Stop(void);
-extern __FAR__ Uint32   DEVICE_TIMER0Status(void);
+void    DEVICE_TIMER0Start(void);
+void    DEVICE_TIMER0Stop(void);
+Uint32  DEVICE_TIMER0Status(void);
 
 
 /***********************************************************

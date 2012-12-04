@@ -1,5 +1,5 @@
 /* --------------------------------------------------------------------------
-  FILE        : nanderaser.c 				                             	 	        
+  FILE        : nandwriter.c 				                             	 	        
   PROJECT     : TI Booting and Flashing Utilities
   AUTHOR      : Sandeep Paulraj <s-paulraj@ti.com>
   DESC	      : CCS-based utility to Erase the NAND connected to each CS.
@@ -53,6 +53,7 @@ extern __FAR__ Uint32 DDRStart;
 static Uint32 nanderaser(void);
 
 
+
 /************************************************************
 * Global Variable Definitions
 ************************************************************/
@@ -77,7 +78,7 @@ void main( void )
   }
 
 
-  // Execute the NAND flashing
+	// Execute the NAND flashing
   status = nanderaser();
 
   if (status != E_PASS)
@@ -102,7 +103,7 @@ static Uint32 nanderaser()
   Int8  answer[24];
   Int32 CSAddr;
 
-  DEBUG_printString("Starting DM36x NAND Erase Utility.\r\n");
+ DEBUG_printString("Starting DM36x NAND Erase Utility.\r\n");
   
   DEBUG_printString("Enter the Address where NAND is conencted (in hex): \n");
   DEBUG_readString(answer);
@@ -118,10 +119,16 @@ static Uint32 nanderaser()
     return E_FAIL;
   }
 
-  DEBUG_printString("Attempting a global erase of NAND\n");
-  NAND_globalErase_with_bb_check(hNandInfo);
+   DEBUG_printString("Attempting a global erase of NAND\n");
+   NAND_globalErase_with_bb_check(hNandInfo);
+
+
 
   return E_PASS;
 }
+
+
+
+
 
 

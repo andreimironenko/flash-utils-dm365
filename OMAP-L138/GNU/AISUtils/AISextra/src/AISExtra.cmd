@@ -1,7 +1,7 @@
 
 MEMORY
 {
-	L2RAM		    org=0x11800000 len=0x00002000 /* L2 RAM/Cache */
+	L2RAM		    org=0x0081E000 len=0x00002000 /* L2 RAM/Cache */
 }
 
 

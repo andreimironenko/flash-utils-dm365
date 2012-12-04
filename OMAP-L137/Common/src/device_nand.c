@@ -305,7 +305,6 @@ static Uint32 DEVICE_NAND_ECC_correct(NAND_InfoHandle hNandInfo, Uint8 *data, Ui
 
   if ((corrState == 1) || (corrState > 3))
   {
-    temp = AEMIF->NANDERRVAL1;
     return E_FAIL;
   }
   else if (corrState == 0)

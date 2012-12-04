@@ -1,7 +1,7 @@
 all:
 %::
 		$(MAKE) -C CCS $@
-		$(MAKE) -C GNU $@
+#		$(MAKE) -C GNU $@
 
 		
 		

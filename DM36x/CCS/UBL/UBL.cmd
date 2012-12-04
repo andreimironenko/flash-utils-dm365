@@ -1,3 +1,4 @@
+-l rtsv4_A_le_eabi_eh.lib
 -e boot
 
 EMIFStart  = 0x02000000;

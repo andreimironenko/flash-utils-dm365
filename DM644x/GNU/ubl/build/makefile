@@ -19,15 +19,15 @@ DEVSTRING=DM644x
 ENTRYPOINT=boot
 
 CFLAGS:=-c -Os -Wall -ffreestanding -I../../../Common/include -I../../../../Common/include -I../../../../Common/arch/arm926ejs/include -I../../../../Common/$(PROGRAM)/include -I../../../../Common/drivers/include -I../../../../Common/gnu/include 
-ifeq ($(TYPE),NAND)
+ifeq ($(TYPE),nand)
 	CFLAGS+= -DUBL_NAND
   SOURCES+= nand.c nandboot.c device_nand.c
 endif
-ifeq ($(TYPE),NOR)
+ifeq ($(TYPE),nor)
   CFLAGS+= -DUBL_NOR
   SOURCES+= nor.c norboot.c 
 endif
-ifeq ($(TYPE),SDMMC)
+ifeq ($(TYPE),sdmmc)
 	CFLAGS+= -DUBL_SDMMC
   SOURCES+= sdmmc.c sdmmcboot.c
 endif
@@ -41,7 +41,7 @@ ifeq ($(DEVICE),DM6441_LV)
   DEVSTRING=DM6441LV
 endif
 
-OBJECTS:=$(patsubst %.c,%_$(TYPE)_$(DEVSTRING).o,$(SOURCES))
+OBJECTS:=$(patsubst %.c,%_$(TYPE).o,$(SOURCES))
 EXECUTABLE:=$(PROGRAM)_$(DEVSTRING)_$(TYPE)
 BINARY:=../$(EXECUTABLE).bin
 LINKERSCRIPT=../$(PROGRAM).lds
@@ -64,7 +64,7 @@ $(BINARY): $(EXECUTABLE)
 $(EXECUTABLE): $(OBJECTS) $(LINKERSCRIPT)
 		$(CC) $(LDFLAGS) $(OBJECTS) -o $@
 		
-%_$(TYPE)_$(DEVSTRING).o: %.c %.h
+%_$(TYPE).o : %.c %.h
 		$(CC) $(CFLAGS) $< -o $@      
         
 # Search paths for code and header files

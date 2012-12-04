@@ -85,6 +85,7 @@ const String devString = "DM35x";
 Uint32 DEVICE_init()
 {
   Uint32 status = E_PASS;
+  Uint32 temp;
 
   // Mask all interrupts
   AINTC->INTCTL = 0x4;
@@ -121,6 +122,7 @@ Uint32 DEVICE_init()
   // AEMIF Setup
   if (status == E_PASS) status |= DEVICE_EMIFInit();
 
+  temp = AEMIF->NANDERRADD1;
   // UART0 Setup
   if (status == E_PASS) status |= DEVICE_UART0Init();
 
@@ -385,11 +387,7 @@ Uint32 DEVICE_DDR2Init()
   
   // Wait for calibration to complete 
   UTIL_waitLoop( 150 );
-  
-  // Set the DDR2 to synreset, then enable it again
-  DEVICE_LPSCTransition(LPSC_DDR2,PD0,PSC_SYNCRESET);
-  DEVICE_LPSCTransition(LPSC_DDR2,PD0,PSC_ENABLE);
-    
+ 
   // DDR Timing Setup for Micron MT47H64M16BT-37E @ 171 MHz  
  
   // Setup the read latency
@@ -438,6 +436,12 @@ Uint32 DEVICE_DDR2Init()
                 (DDR_CL << 9)       |
                 (DDR_IBANK << 4)    |
                 (DDR_PAGESIZE <<0);
+
+
+// Set the DDR2 to synreset, then enable it again
+  DEVICE_LPSCTransition(LPSC_DDR2,PD0,PSC_SYNCRESET);
+  DEVICE_LPSCTransition(LPSC_DDR2,PD0,PSC_ENABLE);
+
   
   return E_PASS;
 }

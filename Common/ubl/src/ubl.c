@@ -34,28 +34,10 @@
 #include "nandboot.h"
 #endif
 
-#ifdef UBL_ONENAND
-// NAND driver include
-#include "onenand.h"
-#include "onenandboot.h"
-#endif
-
 #ifdef UBL_SD_MMC
 // NAND driver include
-#include "sd_mmc.h"
-#include "sd_mmcboot.h"
-#endif
-
-#ifdef UBL_SPI
-// NAND driver include
-#include "spi_mem.h"
-#include "spiboot.h"
-#endif
-
-#ifdef UBL_I2C
-// NAND driver include
-#include "i2c_mem.h"
-#include "i2cboot.h"
+#include "sdmmc.h"
+#include "sdmmcboot.h"
 #endif
 
 /************************************************************
@@ -166,18 +148,6 @@ static Uint32 LOCAL_boot(void)
       LOCAL_bootAbort();
     }
   }
-#elif defined(UBL_ONENAND)  
-  {
-    //Report Bootmode to host
-    DEBUG_printString("OneNAND\r\n");
-
-    // Copy binary image application from OneNAND to RAM
-    if (ONENANDBOOT_copy() != E_PASS)
-    {
-      DEBUG_printString("OneNAND Boot failed.\r\n");
-      LOCAL_bootAbort();
-    }
-  }
 #elif defined(UBL_NOR)
   {
     //Report Bootmode to host
@@ -187,6 +157,18 @@ static Uint32 LOCAL_boot(void)
     if (NORBOOT_copy() != E_PASS)
     {
       DEBUG_printString("NOR Boot failed.\r\n");
+      LOCAL_bootAbort();
+    }
+  }
+#elif defined(UBL_PCI)
+  {
+    //Report Bootmode to host
+    DEBUG_printString("PCI \r\n");
+
+    // Copy binary application image from PCI to RAM
+    if (PCIBOOT_copy() != E_PASS)
+    {
+      DEBUG_printString("PCI Boot failed.\r\n");
       LOCAL_bootAbort();
     }
   }
@@ -202,36 +184,14 @@ static Uint32 LOCAL_boot(void)
       LOCAL_bootAbort();
     }
   }
-#elif defined(UBL_SPI)
-  {
-    //Report Bootmode to host
-    DEBUG_printString("SPI \r\n");
-
-    // Copy binary of application image from SPI memory
-    if (SPIBOOT_copy() != E_PASS)
-    {
-      DEBUG_printString("SPI Boot failed.\r\n");
-      LOCAL_bootAbort();
-    }
-  }
-#elif defined(UBL_I2C)
-  {
-    //Report Bootmode to host
-    DEBUG_printString("I2C \r\n");
-
-    // Copy binary of application image from I2C Memory
-    if (I2CBOOT_copy() != E_PASS)
-    {
-      DEBUG_printString("SPI Boot failed.\r\n");
-      LOCAL_bootAbort();
-    }
-  }  
 #else
   {
     //Report Bootmode to host
     DEBUG_printString("UART\r\n");
     UARTBOOT_copy();      
   }
+
+
 #endif
     
   DEBUG_printString("   DONE");

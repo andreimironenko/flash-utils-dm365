@@ -43,6 +43,9 @@ void UTIL_buildCRC32Table(Uint32* lutCRC, Uint32 poly);
 Uint16 UTIL_calcCRC16(Uint16* lutCRC, Uint8 *data, Uint32 size, Uint16 currCRC);
 void UTIL_buildCRC16Table(Uint16* lutCRC, Uint16 poly);
 
+Uint32 div (Uint32 v, Uint32 d);
+Uint32 mod (Uint32 v, Uint32 d);
+
 
 
 

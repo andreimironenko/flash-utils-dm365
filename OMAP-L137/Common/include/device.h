@@ -1,6 +1,6 @@
 /* --------------------------------------------------------------------------
   FILE        : device.h                                                   
-  PROJECT     : TI Booting and Flashing Utilities for OMAP-L137
+  PROJECT     : TI Booting and Flashing Utilities
   AUTHOR      : Daniel Allred
   DESC        : Provides device differentiation for the project files. This
                 file MUST be modified to match the device specifics.
@@ -19,13 +19,6 @@ extern far "c" {
 /***********************************************************
 * Global Macro Declarations                                *
 ***********************************************************/
-
-
-/************************************************************
-* Global Variable Declarations                              *
-************************************************************/
-
-extern const String devString;
 
 
 /******************************************************
@@ -54,9 +47,6 @@ typedef enum _DEVICE_BootMode_
 	DEVICE_BOOTMODE_UART0,
 	DEVICE_BOOTMODE_UART1,
 	DEVICE_BOOTMODE_UART2,
-	
-	DEVICE_BOOTMODE_UART,										// Fix me; for temporary compatibility w/ sft.c
-	
 	DEVICE_BOOTMODE_MMC,										// Not supported
 	DEVICE_BOOTMODE_RMII,										// Not supported
 	DEVICE_BOOTMODE_USB0,										// Not supported
@@ -235,62 +225,6 @@ DEVICE_PSCRegs;
 #define LPSC_UART1          (12)
 #define LPSC_UART2          (13)
 #define LPSC_L3CBA          (31)
-
-
-
-
-
-
-/***************************************************************************************************************/
-//Need to be fixed completely wrong
-
-
-// DDR2 Memory Ctrl Register structure - See sprue22b.pdf for more details.
-typedef struct _DEVICE_DDR2_REGS_
-{
-  VUint8 RSVD0[4];        //0x00
-  VUint32 SDRSTAT;        //0x04
-  VUint32 SDBCR;          //0x08
-  VUint32 SDRCR;          //0x0C
-  VUint32 SDTIMR;         //0x10
-  VUint32 SDTIMR2;        //0x14
-  VUint8 RSVD1[8];        //0x18 
-  VUint32 PBBPR;          //0x20
-  VUint8 RSVD2[156];      //0x24 
-  VUint32 IRR;            //0xC0
-  VUint32 IMR;            //0xC4
-  VUint32 IMSR;           //0xC8
-  VUint32 IMCR;           //0xCC
-  VUint8 RSVD3[20];       //0xD0
-  VUint32 DDRPHYCR;       //0xE4
-  VUint8 RSVD4[8];        //0xE8
-  VUint32 VTPIOCR;        //0xF0
-}
-DEVICE_DDR2Regs;
-
-#define DDR                       ((DEVICE_DDR2Regs*) 0x20000000)
-#define DDRVTPR                   (*((VUint32*) 0x01C42030))
-
-#define DEVICE_DDR2_TEST_PATTERN  (0xA55AA55Au)
-#define DEVICE_DDR2_RAM_SIZE      (0x10000000u)
-
-#define DEVICE_MAX_IMAGE_SIZE     (0x02000000u)
-#define DEVICE_DDR2_START_ADDR    (0x80000000u)
-#define DEVICE_DDR2_END_ADDR      ((DEVICE_DDR2_START_ADDR + DEVICE_DDR2_RAM_SIZE))
-
-
-
-
-
-
-/******************************************************************************************************************/
-
-
-
-
-
-
-
 
 // AEMIF Register structure - From EMIF 2.5 Spec
 typedef struct _DEVICE_EMIF_REGS_
@@ -485,71 +419,36 @@ DEVICE_I2CRegs;
 
 #define I2C_ICEMDR_EXTMODE      (0x00000000)
 
-typedef struct _DEVICE_SPI_REGS_
-{
-  VUint32 SPIGCR0;          // 0x00
-  VUint32 SPIGCR1;          // 0x04
-  VUint32 SPIINT;           // 0x08
-  VUint32 SPILVL;           // 0x0C
-  VUint32 SPIFLG;           // 0x10
-  VUint32 SPIPC0;           // 0x14
-  VUint32 SPIPC1;           // 0x18
-  VUint32 SPIPC2;           // 0x1C
-  VUint32 SPIPC3;           // 0x20
-  VUint32 SPIPC4;           // 0x24
-  VUint32 SPIPC5;           // 0x28
-  VUint32 SPIPC6;           // 0x2C
-  VUint32 SPIPC7;           // 0x30
-  VUint32 SPIPC8;           // 0x34
-  VUint32 SPIDAT[2];        // 0x38
-  VUint32 SPIBUF;           // 0x40
-  VUint32 SPIEMU;           // 0x44
-  VUint32 SPIDELAY;         // 0x48
-  VUint32 SPIDEF;           // 0x4C
-  VUint32 SPIFMT[4];        // 0x50
-  VUint32 TGINTVEC[2];      // 0x60
-  VUint32 RSVD0[2];         // 0x68
-  VUint32 MIBSPIE;          // 0x70
-}
-DEVICE_SPIRegs;
-
-#define SPI0 ((DEVICE_SPIRegs *) 0x01C41000u)
-#define SPI1 ((DEVICE_SPIRegs *) 0x01E12000u)
-
-#define SPI_PERIPHERAL_CNT      (2)
-
-
 
 /***********************************************************
 * Global Function Declarations                             *
 ***********************************************************/
 
 // Execute LPSC state transition
-extern __FAR__ void    DEVICE_LPSCTransition(Uint8 pscnum, Uint8 module, Uint8 domain, Uint8 state);
-extern __FAR__ void    DEVICE_PSCInit();
+void    DEVICE_LPSCTransition(Uint8 pscnum, Uint8 module, Uint8 domain, Uint8 state);
+void    DEVICE_PSCInit();
 
 // Pinmux control function
-extern __FAR__ void    DEVICE_pinmuxControl(Uint32 regOffset, Uint32 mask, Uint32 value);
+void    DEVICE_pinmuxControl(Uint32 regOffset, Uint32 mask, Uint32 value);
 
 // Initialization prototypes
-extern __FAR__ Uint32  DEVICE_init(void);
-extern __FAR__ Uint32  DEVICE_UART0Init(void);
-extern __FAR__ Uint32  DEVICE_TIMER0Init(void);
-extern __FAR__ Uint32  DEVICE_EMIFInit(void);
-extern __FAR__ Uint32  DEVICE_SPIInit(Uint8 periphNum);
-extern __FAR__ Uint32  DEVICE_I2C0Init(void);
-extern __FAR__ Uint32  DEVICE_PLL2Init(void);
-extern __FAR__ Uint32  DEVICE_PLL1Init(Uint32 PllMult);
-extern __FAR__ Uint32  DEVICE_DDR2Init(void);
-extern __FAR__ Uint32  DEVICE_I2C0Reset();
+Uint32  DEVICE_init(void);
+Uint32  DEVICE_UART0Init(void);
+Uint32  DEVICE_TIMER0Init(void);
+Uint32  DEVICE_EMIFInit(void);
+Uint32  DEVICE_I2C0Init(void);
+Uint32  DEVICE_PLL2Init(void);
+Uint32  DEVICE_PLL1Init(Uint32 PllMult);
+Uint32  DEVICE_DDR2Init(void);
+Uint32  DEVICE_I2C0Reset();
 
 // Device boot status functions
-extern __FAR__ DEVICE_BootMode   DEVICE_bootMode( void );
-extern __FAR__ DEVICE_BusWidth   DEVICE_emifBusWidth( void );
+DEVICE_BootMode   DEVICE_bootMode( void );
+DEVICE_BusWidth   DEVICE_emifBusWidth( void );
 
-extern __FAR__ void    DEVICE_TIMER0Start(void);
-extern __FAR__ void    DEVICE_TIMER0Stop(void);
-extern __FAR__ Uint32  DEVICE_TIMER0Status(void);
+void    DEVICE_TIMER0Start(void);
+void    DEVICE_TIMER0Stop(void);
+Uint32  DEVICE_TIMER0Status(void);
 
 
 /***********************************************************

@@ -121,7 +121,7 @@ static Uint32 norwriter()
   LOCAL_latchPage(LOCAL_norBase);
 
   // Initialize NOR Flash
-  hNorInfo = NOR_open((Uint32)LOCAL_norBase, DEVICE_BUSWIDTH_16BIT );
+  hNorInfo = NOR_open((Uint32)LOCAL_norBase, (Uint8)DEVICE_emifBusWidth() );
   if (hNorInfo == NULL)
   {
     DEBUG_printString( "\tERROR: NOR Initialization failed.\r\n" );

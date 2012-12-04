@@ -43,6 +43,9 @@
 #ifndef E_TIMEOUT
   #define E_TIMEOUT (0x00000002u)
 #endif
+#ifndef E_DEVICE
+  #define E_DEVICE (0x00000003u)
+#endif
 
 // Aliases for standard C types
 typedef int                     Int;

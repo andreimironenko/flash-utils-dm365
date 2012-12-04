@@ -133,6 +133,9 @@ namespace AISGenLib
       // DM643x AIS data is big endian (this is important for CRC calcs)
       devAISEndian = Endian.BigEndian;
 
+      // INI file describes ROM function parameters
+      devINIFileName = devNameShort + ".ini";
+
       // Default settings for UARTSendDONE function
       UARTSendDONEAddr = 0x0;
       SendUARTSendDONE = false;

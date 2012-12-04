@@ -1,13 +1,14 @@
 /* --------------------------------------------------------------------------
-  FILE        : nanderaser.h
+  FILE        : nandwriter.h
   PROJECT     : TI Booting and Flashing Utilities
   AUTHOR      : Daniel Allred
+  MODIFIED	  : Sandeep Paulraj; to add DM36x support
   DESC        : Header file for the NANDWriter application for flashing the 
                 DM36x EVM from Spectrum Digital.
  ----------------------------------------------------------------------------- */
 
-#ifndef _NANDERASER_H_
-#define _NANDERASER_H_
+#ifndef _NANDWRITER_H_
+#define _NANDWRITER_H_
 
 #include "tistdtypes.h"
 
@@ -78,8 +79,13 @@ void main(void);
 }
 #endif
 
-#endif //_NANDERASER_H_
+#endif //_NANDWRITER_H_
 
+/* --------------------------------------------------------------------------
+  HISTORY
+    v1.00 - DJA - 02-Nov-2007
+      Initial release
+-------------------------------------------------------------------------- */
 
 
 

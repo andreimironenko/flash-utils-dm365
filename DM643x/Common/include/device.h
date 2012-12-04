@@ -27,7 +27,8 @@ extern far "c" {
 ******************************************************/
 
 // Supported buswidth
-typedef enum _DEVICE_BusWidth_ {
+typedef enum _DEVICE_BusWidth_
+{
   DEVICE_BUSWIDTH_8BIT   = BUS_8BIT,
   DEVICE_BUSWIDTH_16BIT  = BUS_16BIT
 }

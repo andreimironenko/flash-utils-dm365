@@ -18,7 +18,7 @@
 // Utility functions
 #include "util.h"
 
-
+//#define ARM270_DDR216_OSC24
 /************************************************************
 * Explicit External Declarations                            *
 ************************************************************/
@@ -44,9 +44,7 @@ extern __FAR__ VUint32* DDRStart;
 /************************************************************
 * Local Variable Definitions                                *
 \***********************************************************/
-  static const Uint32 PLL1_Mult = DEVICE_PLL1_MULTIPLIER;
-  static const Uint32 PLL2_Mult = DEVICE_PLL2_MULTIPLIER;
-    
+      
 
 /************************************************************
 * Global Variable Definitions                               *
@@ -55,17 +53,270 @@ extern __FAR__ VUint32* DDRStart;
 const String devString = "DM36x";
 #define GPINT_GPEN		(unsigned int *)(0x01C21C08)		// WDT special function
 #define GPTDAT_GPDIR	(unsigned int *)(0x01C21C0c)		// WDT special function
+#define TMPBUF          (unsigned int *)(0x17ff8)
+#define TMPSTATUS		(unsigned int *)(0x17ff0)
+#define FLAG_PORRST		0x00000001
+#define FLAG_WDTRST		0x00000002
+#define FLAG_FLGON		0x00000004
+#define FLAG_FLGOFF		0x0000001
+
+static const Uint16 DDR_T_RFC = 1275;
+static const Uint16 DDR_T_RP = 200;
+static const Uint16 DDR_T_RCD = 200;
+static const Uint16 DDR_T_WR = 150 ;
+static const Uint16 DDR_T_RAS = 450;
+static const Uint16 DDR_T_RC = 650;
+static const Uint16 DDR_T_RRD = 100;
+static const Uint16 DDR_T_WTR = 100;
+static const Uint32 DDR_T_RASMAX = 700000;
+static const Uint16 DDR_T_XP = 2;
+static const Uint16 DDR_T_XSNR = 1375;
+static const Uint16 DDR_T_XSRD = 199;
+static const Uint16 DDR_T_RTP = 75;
+static const Uint16 DDR_T_CKE = 3;
+static const Uint16 DDR_RR = 78;
+
+
+/* PLL Divider settings for Various ARM/DDR Frequencies */
+#if defined(ARM297_DDR270_OSC24)
+
+#define PLL1_MUL		0x2d  
+#define PLL1_PREDIV		0x3
+#define PLL1_POSTDIV		0x0 	//PLL1 output ( 0x2d * 2* 24 / (0x3+ 1) = 540 MHZ )
+	
+#define PLL1_DIV1		0x2c	//USB 12 MHZ
+#define PLL1_DIV2		0x1	// POST DIV 540/2 -> HDVICP max =270 MHZ 
+#define PLL1_DIV3		0x1	// POST DIV 540/2  -> MJCP/HDVICP  max =270 MHZ 
+#define PLL1_DIV4		0x3	// POST DIV 540/4  -> EDMA/EDMA CFG	MAX =135 MHZ 
+#define PLL1_DIV5		0x1	// POST DIV 540/2 -> VPSS 	max =270 MHZ
+#define PLL1_DIV6		0x13	// 27Mhz POST DIV 540/20  -> VENC 27 MHZ	
+#define PLL1_DIV7		0x0	// POST DIV 540/2 -> DDR max =270 MHZ
+#define PLL1_DIV8		0x05	// POST DIV 540/6 -> 90 MMC0/SD0 <=100
+#define PLL1_DIV9		0x1	// POST DIV 540/2 -> CLKOUT
+
+
+#define PLL2_MUL		0x63
+#define PLL2_PREDIV		0x7
+#define PLL2_POSTDIV		0x0	//PLL2 Output (0x63 * 2 * 24 / (0x7 + 1) = 594MHZ
+
+#define PLL2_DIV1		0x18	// 594/25 23.6 MHZ USB
+#define PLL2_DIV2		0x1  	// 594/2 =297 Mhz -> ARM 
+#define PLL2_DIV3		0x1	// 297 MHZ 2 * ddr
+#define PLL2_DIV4		0x1c 	// POST DIV 594/29 = 20.48 -> VOICE
+#define PLL2_DIV5		0x07 	// POST DIV 594/8 = 74.25 ->VIDEO HD
+
+#define PERIPHERAL_CLK_CTRL_VAL	0x243F04FC
+
+#define DDR_FREQ	 270
+
+#elif defined(ARM270_DDR216_OSC24)
+
+#define PLL1_MUL		0x9  
+#define PLL1_PREDIV		0x0
+#define PLL1_POSTDIV		0x0 	//PLL1 output ( 0x9 * 2* 24 = 432 MHZ )
+
+#define PLL1_DIV1		0x11	// POST DIV 432/18 ->24 mhz
+#define PLL1_DIV2		0x1	// POST DIV 432/2  -> HDVICP max =216 MHZ
+#define PLL1_DIV3		0x1	// POST DIV 432/2  -> MJCP/HDVICP
+#define PLL1_DIV4		0x3	// POST DIV 432/4  -> EDMA/EDMA CFG
+#define PLL1_DIV5		0x1	// POST DIV 432/2 -> VPSS
+#define PLL1_DIV6		0x5	// POST DIV 432/(5+1) 72  -> VENC	
+#define PLL1_DIV7		0x0	// POST DIV 432 -> DDR
+#define PLL1_DIV8		0x04	// POST DIV 432/5 ->  86 MMC0/SD0
+#define PLL1_DIV9		0x1	// POST DIV 432/2 -> CLKOUT
+
+#define PLL2_MUL		0x2D
+#define PLL2_PREDIV		0x7
+#define PLL2_POSTDIV		0x0 	//PLL2 Output (0x2D * 2 * 24 / (0x7 + 1) = 270 MHZ
+
+
+#define PLL2_DIV1		0xA	// USB 24.5  MHZ
+#define PLL2_DIV2		0x0  	// 270 =270 Mhz -> ARM 
+#define PLL2_DIV3		0x0	// 270 2* DDR
+#define PLL2_DIV4		0x05 	// POST DIV 270/6  -> VOICE
+#define PLL2_DIV5		0x09 	// POST DIV 270/10 = 27 MHZ ->VIDEO HD
+
+#define PERIPHERAL_CLK_CTRL_VAL	0x243F04FC
+
+#define DDR_FREQ	 216
+
+#elif defined(ARM297_DDR277_OSC27) 
+
+#define PLL1_MUL		0x2c
+#define PLL1_PREDIV		0x03
+#define PLL1_POSTDIV		0x0 	//PLL1 output ( 0x2c * 2 * 27 /4  = 594 MHZ )
+
+#define PLL1_DIV1		0x17	//USB 24 MHZ
+#define PLL1_DIV2		0x1
+#define PLL1_DIV3		0x1	// POST DIV 594/2  -> MJCP/HDVICP
+#define PLL1_DIV4		0x3	// POST DIV 594/4  -> EDMA/EDMA CFG
+#define PLL1_DIV5		0x3	// POST DIV 540/4 -> VPSS
+#define PLL1_DIV6		0x15	// 27Mhz POST DIV 594/22  -> VENC	
+#define PLL1_DIV7		0x0	// POST DIV 597 -> DDR
+#define PLL1_DIV8		0x03	// POST DIV 594/4 -> 90 MMC0/SD0
+#define PLL1_DIV9		0x1	// POST DIV 594/2 -> CLKOUT
+
+#define PLL2_MUL		0x100  
+#define PLL2_PREDIV		0x18
+#define PLL2_POSTDIV	0x0 		//PLL2 Output (0x100 * 2 * 27 / (0x18 + 1) = 552 MHZ
+
+#define PLL2_DIV1		0x18	// 552.96/0x19  MHZ USB
+#define PLL2_DIV2		0x0 	// 552.96/1 = 552.96 Mhz -> ARM 
+#define PLL2_DIV3		0x1	// 552.96/2 = 276.48 mhz 2 * ddr
+#define PLL2_DIV4		0x8 	// POST DIV 552.96/9 =  -> VOICE
+#define PLL2_DIV5		0x0 	// POST DIV 552.96/1 = 552.96 ->VIDEO HD
+
+#define PERIPHERAL_CLK_CTRL_VAL	0x0BFF077C
+
+#define DDR_FREQ		 277
+
+#elif defined(ARM216_DDR173_OSC19P2)
+
+#define PLL1_MUL		0x2d 
+#define PLL1_PREDIV		0x3
+#define PLL1_POSTDIV		0x0 	//PLL1 output ( 0x2d * 2 * 19.2 /4  = 432  MHZ )
+
+#define PLL1_DIV1		0x11	// USB ~24 MHZ
+#define PLL1_DIV2		0x1	
+#define PLL1_DIV3		0x1	// POST DIV  432/2  -> MJCP/HDVICP
+#define PLL1_DIV4		0x3	// POST DIV  432/4  -> EDMA/EDMA CFG
+#define PLL1_DIV5		0x3	// POST DIV  432/4  -> VPSS
+#define PLL1_DIV6		0x0f	// POST DIV    432/16  -> VENC	
+#define PLL1_DIV7		0x0	// POST DIV  432 -> DDR
+#define PLL1_DIV8		0x04	// POST DIV  432/5 -> 86 MMC0/SD0
+#define PLL1_DIV9		0x1	// POST DIV  432/2 -> CLKOUT
+
+#define PLL2_MUL		0xE0
+#define PLL2_PREDIV		0x18
+#define PLL2_POSTDIV		0x0	//PLL2 Output (0xE0 * 2 * 19.2 / (0x18+ 1) = 344.064MHZ
+
+
+#define PLL2_DIV1		0xd     // POST DIV 344/15=24 Mhz  ->USB PHY
+#define PLL2_DIV2		0x0 	// 344/1 =344 Mhz -> DDR 
+#define PLL2_DIV3		0x1	// POST DIV 344/2 Mhz  -> DDRx2
+#define PLL2_DIV4		0x6 	// POST DIV 344/7 -> VOICE
+#define PLL2_DIV5		0x0 	// POST DIV 344/1 ->VIDEO HD
+
+#define PERIPHERAL_CLK_CTRL_VAL	0x0BFF05FC
+
+#define DDR_FREQ		 173
+
+#elif defined(ARM216_DDR173_OSC24)
+
+#define PLL1_MUL		0x73 	// VCO will 2M/N+1 = 345 Mhz
+#define PLL1_PREDIV		0xf
+#define PLL1_POSTDIV		0x0  
+
+#define PLL1_DIV1		0xD	// USB ~24 MHZ
+#define PLL1_DIV2		0x1
+#define PLL1_DIV3		0x1	// POST DIV 345/2  -> 172.5Mhz  MJCP/HDVICP
+#define PLL1_DIV4		0x3	// POST DIV 345/4  -> 86.25Mhz EDMA/EDMA CFG
+#define PLL1_DIV5		0x1	// POST DIV 345/2 -> 172.5 MHZ VPSS
+#define PLL1_DIV6		0x0C	// POST DIV 345/13  -> 26.53 MHZ VENC	
+#define PLL1_DIV7		0x0	// POST DIV 345 -> DDR
+#define PLL1_DIV8		0x3	// POST DIV 345/4 = 86.25 MHZ-> MMC0/SD0
+#define PLL1_DIV9		0x1	// POST DIV 345/2 = 172.5 MHZ-> CLKOUT
+
+#define PLL2_MUL		0x12
+#define PLL2_PREDIV		0x1
+#define PLL2_POSTDIV		0x0 	//PLL2 Output (0x12 * 2 * 27 / (0x1 + 1) = 432 MHZ
+
+
+#define PLL2_DIV1		0x11	// POST DIV 432/18=24 Mhz  ->USB PHY
+#define PLL2_DIV2		0x1  	// 432/2 =216 Mhz -> ARM 
+#define PLL2_DIV3		0x1	// POST DIV 432/2=216 Mhz  -> DDRx2
+#define PLL2_DIV4		0x14	// POST DIV 432/21 = 20.57-> VOICE
+#define PLL2_DIV5		0x0f 	// POST DIV 432/16 = 74.25 ->VIDEO HD
+
+#define PERIPHERAL_CLK_CTRL_VAL	0x243F04FC
+
+#define DDR_FREQ		 173
+
+#elif defined(ARM432_DDR340_OSC24)
+
+#define PLL1_MUL		0x55 
+#define PLL1_PREDIV		0x5
+#define PLL1_POSTDIV		0x0 	// PVCO will 24*2M/N+1 = 680 Mhz
+
+#define PLL1_DIV1		0x1B	// POST DIV 680/28=24.3 Mhz->USB PHY 
+#define PLL1_DIV2		0x1	// POST DIV 680/2=340Mhz->ARM926/ARM968
+#define PLL1_DIV3		0x1	// POST DIV 680/2 = 340Mhz  -> MJCP/HDVICP
+#define PLL1_DIV4		0x3	// POST DIV 680/4 = 170Mhz  -> EDMA/Peripheral CFG0 (1/2 Kaleido clock)
+#define PLL1_DIV5		0x1	// POST DIV 680/2 = 340Mhz -> VPSS (max 270)
+#define PLL1_DIV6		0x8	// POST DIV 680/9 = 75.6Mhz -> VENC	
+#define PLL1_DIV7		0x0	// POST DIV 680/1 = 680Mhz -> DDRx2
+#define PLL1_DIV8		0x6 	// POST DIV 680/7=  97 Mhz-> MMC0/SD0
+#define PLL1_DIV9		0x1B	// POST DIV 680/28 = 24.3Mhz-> CLKOUT 
+
+#define PLL2_MUL		0x9
+#define PLL2_PREDIV		0x0
+#define PLL2_POSTDIV	0x0 		// PLL2 Output (0x9 * 2 * 27 / (0x1 + 1) = 432MHZ
+
+#define PLL2_DIV1		0x11	// POST DIV 432/18=24 Mhz  ->USB PHY
+#define PLL2_DIV2		0x0 	// POST DIV 432/1=432 Mhz  -> ARM926/HDVICP 
+#define PLL2_DIV3		0x1	// POST DIV 432/2=216 Mhz  -> DDRx2
+#define PLL2_DIV4		0x14	// POST DIV 432/21= 20.5714 Mhz->VOICE
+#define PLL2_DIV5		0x0f 	// POST DIV 432/16=27 Mhz  -> VENC
+
+#define PERIPHERAL_CLK_CTRL_VAL	0x243F04FC
+
+#define DDR_FREQ		 340
+
+#else  //Arm 297 DDR 243 MHZ 
+
+#define PLL1_MUL		0x51
+#define PLL1_PREDIV		0x7
+#define PLL1_POSTDIV	0x0 		//PVCO will 24*2M/N+1 = 486 Mhz
+
+#define PLL1_DIV1		0x13	//POST DIV 486/20=24.3 Mhz->USB PHY 
+#define PLL1_DIV2		0x1	//POST DIV 486/2=243Mhz->ARM926/ARM968
+#define PLL1_DIV3		0x1	// POST DIV 486/2 = 243 Mhz  -> MJCP/HDVICP
+#define PLL1_DIV4		0x3	// POST DIV 486/4 = 121.5 Mhz  -> EDMA/Peripheral CFG0 (1/2 Kaleido clock)
+#define PLL1_DIV5		0x1	// POST DIV 486/2 = 243Mhz -> VPSS (max 270)
+#define PLL1_DIV6		0x11	// POST DIV 486/18 = 27 Mhz -> VENC	
+#define PLL1_DIV7		0x0	// POST DIV 486/1 = 486Mhz -> DDRx2
+#define PLL1_DIV8		0x4	// POST DIV 486/5 = 97.25Mhz-> MMC0/SD0
+#define PLL1_DIV9		0x1	// POST DIV 486/2 = 24.3Mhz-> CLKOUT 
+
+
+#define PLL2_MUL		0x63
+#define PLL2_PREDIV		0x7
+#define PLL2_POSTDIV	0x0 		//PLL2 Output (0x63 * 2 * 24 / (0x7 + 1) = 594MHZ
+
+#define PLL2_DIV1		0x18	// 594/25 23.6 MHZ USB
+#define PLL2_DIV2		0x1  	// 594/2 =297 Mhz -> ARM 
+#define PLL2_DIV3		0X1		// 297 MHZ 2 * ddr
+#define PLL2_DIV4		0x1c 	// POST DIV 594/29 = 20.48 -> VOICE
+#define PLL2_DIV5		0x07 	// POST DIV 594/8 = 74.25 ->VIDEO HD
+
+#define PERIPHERAL_CLK_CTRL_VAL	0x243F04FC
+
+#define DDR_FREQ		 243
+
+#endif
+
+
 
 /************************************************************
 * Global Function Definitions                               *
 ************************************************************/
 
+
+/*
+ DDR uses PLL1 Sysclk 7
+ Arm uses PLL2 Sysclk 2 
+
+ DDR & ARM Source can be selected by configuring Peripheral ctl reg
+ PERI_CLKCTL 0x48 System module Rrg 0x01c40000
+ */
+
+
+
 Uint32 DEVICE_init()
 {
   Uint32 status = E_PASS;
-  VUint32 temp;
-
-  // Mask all interrupts
+ 
+   // Mask all interrupts
   AINTC->INTCTL = 0x4;
   AINTC->EABASE = 0x0;
   AINTC->EINT0  = 0x0;
@@ -77,11 +328,12 @@ Uint32 DEVICE_init()
   AINTC->IRQ0 = 0xFFFFFFFF;
   AINTC->IRQ1 = 0xFFFFFFFF;
 
+  POR_RESET();
+  WDT_RESET();
+
 #ifndef SKIP_LOW_LEVEL_INIT
 
-  POR_RESET();
-
-  // System PSC setup - enable all
+   // System PSC setup - enable all
   DEVICE_PSCInit();
   
   DEVICE_pinmuxControl(0,0xFFFFFFFF,0x00FD0000);  // All Video Inputs
@@ -93,21 +345,17 @@ Uint32 DEVICE_init()
 	GPIO->DIR02 &= 0xfeffffff;
 	GPIO->CLRDATA02 = 0x01000000;
 
-  // System PLL setup
-  if (status == E_PASS) status |= DEVICE_PLL1Init(PLL1_Mult);
-  
-  // DDR PLL setup
+ 
+  if (status == E_PASS) status |= DEVICE_PLL1Init();
+
   if (status == E_PASS) status |= DEVICE_PLL2Init();
 
-  // DDR2 module setup
-  if (status == E_PASS) status |= DEVICE_DDR2Init();
-#endif
+	if (status == E_PASS) 
+		status |= DEVICE_DDR2Init();
 
-			
+#endif
   // AEMIF Setup
   if (status == E_PASS) status |= DEVICE_EMIFInit();
-
-	temp = AEMIF->NANDERRADD1;
 
   // UART0 Setup
   if (status == E_PASS) status |= DEVICE_UART0Init();
@@ -117,6 +365,8 @@ Uint32 DEVICE_init()
 	
   // I2C0 Setup
   if (status == E_PASS) status |= DEVICE_I2C0Init();
+
+  WDT_FLAG_ON();
 
   return status;
 }
@@ -128,6 +378,9 @@ void POR_RESET()
     
     	VPSS_SYNC_RESET();  // VPSS sync reset
     
+	*TMPBUF = 0;
+	*TMPSTATUS |= FLAG_PORRST;
+    
     	*GPINT_GPEN = 0x00020000;
     
     	*GPTDAT_GPDIR = 0x00020002;
@@ -135,6 +388,34 @@ void POR_RESET()
     	while(1);
   	}
 
+}
+
+void WDT_RESET()
+{
+    volatile unsigned int s;
+
+     if((*TMPBUF == 0x591b3ed7)){
+        *TMPBUF = 0;
+		*TMPSTATUS |= FLAG_PORRST;
+ 		*TMPSTATUS |= FLAG_FLGOFF;  
+        
+        for (s=0;s<0x100;s++) {}
+
+        VPSS_SYNC_RESET();
+
+        *GPINT_GPEN = 0x00020000;                                   // WDT
+
+        *GPTDAT_GPDIR = 0x00020002;                                 // execute >
+  	     while(1);
+    }
+}
+
+void WDT_FLAG_ON()
+{
+
+	SYSTEM->VPSS_CLKCTL &= 0xffffff7f;      // VPSS_CLKMD 1:2
+	*TMPBUF = 0x591b3ed7; 
+	*TMPSTATUS |= FLAG_FLGON;  
 }
 
 void VPSS_SYNC_RESET()
@@ -244,11 +525,13 @@ void DEVICE_PSCInit()
 
 }
 
-Uint32 DEVICE_PLL1Init(Uint32 PLLMult)
+
+Uint32 DEVICE_PLL1Init()
 {
 	unsigned int CLKSRC=0x0;    			  
-	
-  /*Power up the PLL*/
+		
+
+		/*Power up the PLL*/
 	PLL1->PLLCTL &= 0xFFFFFFFD;		
 
 	PLL1->PLLCTL &= 0xFFFFFEFF;  			
@@ -271,8 +554,8 @@ Uint32 DEVICE_PLL1Init(Uint32 PLLMult)
  	PLL1->PLLCTL &= 0xFFFFFFF7;
    
 	//Program the Multiper and Pre-Divider for PLL1
-	 PLL1->PLLM   =   0x51;   // VCO will 24*2M/N+1 = 486Mhz
-	 PLL1->PREDIV =   0x8000|0x7; 
+	 PLL1->PLLM   =   PLL1_MUL;   // VCO will 24*2M/N+1 = 486Mhz
+	 PLL1->PREDIV =   0x8000 | PLL1_PREDIV; 
 	 
 		 
 	PLL1->SECCTL = 0x00470000;   // Assert TENABLE = 1, TENABLEDIV = 1, TINITZ = 1 
@@ -286,18 +569,19 @@ Uint32 DEVICE_PLL1Init(Uint32 PLLMult)
 
 
      //Program the PostDiv for PLL1
-     PLL1->POSTDIV = 0x8000;
+     PLL1->POSTDIV = 0x8000 | PLL1_POSTDIV;
     
      // Post divider setting for PLL1 
 
-	    PLL1->PLLDIV2 = 0x8001;   
-	    PLL1->PLLDIV3 = 0x8001;   // POST DIV 486/2  -> MJCP/HDVICP
-	    PLL1->PLLDIV4 = 0x8003;   // POST DIV 486/4  -> EDMA/EDMA CFG
-	    PLL1->PLLDIV5 = 0x8001;   // POST DIV 486/2 -> VPSS
-	    PLL1->PLLDIV6 = 0x8011;   // 27Mhz POST DIV 486/18  -> VENC
-        PLL1->PLLDIV7 = 0x8000;   // POST DIV 486/2 -> DDR
-	    PLL1->PLLDIV8 = 0x8003;   // POST DIV 486/4 -> MMC0/SD0
-	    PLL1->PLLDIV9 = 0x8001;   // POST DIV 486/2 -> CLKOUT
+		PLL1->PLLDIV1 = 0x8000 | PLL1_DIV1;
+	    PLL1->PLLDIV2 = 0x8000 | PLL1_DIV2;   
+	    PLL1->PLLDIV3 = 0x8000 | PLL1_DIV3;   // POST DIV 486/2  -> MJCP/HDVICP
+	    PLL1->PLLDIV4 = 0x8000 | PLL1_DIV4;   // POST DIV 486/4  -> EDMA/EDMA CFG
+	    PLL1->PLLDIV5 = 0x8000 | PLL1_DIV5;   // POST DIV 486/2 -> VPSS
+	    PLL1->PLLDIV6 = 0x8000 | PLL1_DIV6;   // 27Mhz POST DIV 486/18  -> VENC
+        PLL1->PLLDIV7 = 0x8000 | PLL1_DIV7;   // POST DIV 486/2 -> DDR
+	    PLL1->PLLDIV8 = 0x8000 | PLL1_DIV8;   // POST DIV 486/4 -> MMC0/SD0
+	    PLL1->PLLDIV9 = 0x8000 | PLL1_DIV9;   // POST DIV 486/2 -> CLKOUT
 	    
 	 	UTIL_waitLoop(300);
 	    
@@ -317,6 +601,7 @@ Uint32 DEVICE_PLL1Init(Uint32 PLLMult)
 
   return E_PASS;
 }
+
 
 Uint32 DEVICE_PLL2Init()
 {
@@ -348,10 +633,10 @@ Uint32 DEVICE_PLL2Init()
      PLL2->PLLCTL &= 0xFFFFFFF7;		
 			 
      //Program the Multiper and Pre-Divider for PLL2
-	 PLL2->PLLM   =   0x63;   // VCO will 24*2M/N+1 = 594Mhz
-	 PLL2->PREDIV =   0x8000|0x7; 
+	 PLL2->PLLM   = PLL2_MUL;  // VCO will 24*2M/N+1 = 594Mhz
+	 PLL2->PREDIV = 0x8000 | PLL2_PREDIV; 
 	 
-	 PLL2->POSTDIV = 0x8000;
+	 PLL2->POSTDIV = 0x8000 | PLL2_POSTDIV;
     
 	 PLL2->SECCTL = 0x00470000;   // Assert TENABLE = 1, TENABLEDIV = 1, TINITZ = 1 
      PLL2->SECCTL = 0x00460000;   // Assert TENABLE = 1, TENABLEDIV = 1, TINITZ = 0 
@@ -360,10 +645,11 @@ Uint32 DEVICE_PLL2Init()
 			     
 	  // Post divider setting for PLL2 
 
-     PLL2->PLLDIV2 = 0x8001;   // 594/2 =297 Mhz -> ARM 
-	 PLL2->PLLDIV4 = 0x801C;   // POST DIV 594/29 = 20.48 -> VOICE
-	 PLL2->PLLDIV5 = 0x8007;   // POST DIV 594/8 = 74.25 ->VIDEO HD
-	 
+	 PLL2->PLLDIV1 = 0x8000 | PLL2_DIV1;
+     PLL2->PLLDIV2 = 0x8000 | PLL2_DIV2;   // 594/2 =297 Mhz -> ARM 
+	 PLL2->PLLDIV3 = 0x8000 | PLL2_DIV3;   // POST DIV 594/29 = 20.48 -> VOICE
+	 PLL2->PLLDIV4 = 0x8000 | PLL2_DIV4;   // POST DIV 594/8 = 74.25 ->VIDEO HD
+	 PLL2->PLLDIV5 = 0x8000 | PLL2_DIV5;
 		     
 	  //GoCmd for PostDivider to take effect
             
@@ -381,16 +667,36 @@ Uint32 DEVICE_PLL2Init()
 	  PLL2->PLLCTL |= 0x00000001;   // PLLEN=0
 
 	//do this after PLL's have been set up
-	SYSTEM->PERI_CLKCTRL = 0x243F04FC;
+	SYSTEM->PERI_CLKCTRL = PERIPHERAL_CLK_CTRL_VAL;
 
   
   return E_PASS;
  
 }
 
+Uint32 DDR_Get_Val(Uint32 parm, Uint32 freq)
+{
+   Uint32 result;
+	
+   //result = ((parm * freq) / 10000) - 1;
+   result = div((parm * freq),10000) - 1;
+
+    /* Check if value calculated from formula results in decimal. 
+    * If yes round off to next decimal, as the value to be
+     * written to register should be >= calculated value.
+     */
+   //if((parm * freq) % 10000)
+   if(mod((parm * freq),10000))
+         result++;
+	
+  return result;
+}
 
 Uint32 DEVICE_DDR2Init()
 {
+
+ Uint32 tRFC, tRP, tRCD, tWR, tRAS, tRC, tRRD, tWTR;
+
  DEVICE_LPSCTransition(LPSC_DDR2,0,PSC_ENABLE);
   
   SYSTEM->VTPIOCR = (SYSTEM->VTPIOCR) & 0xFFFF9F3F;
@@ -420,17 +726,45 @@ Uint32 DEVICE_DDR2Init()
     
  	DDR->DDRPHYCR = 0x000000C5; 
 
-	DDR->SDBCR = 0x08D34832;		//Program SDRAM Bank Config Register
-	DDR->SDBCR = 0x0853C832;
+	DDR->SDBCR = 0x534832;
+	DDR->SDBCR = 0x53C832; // 0x53C832; Set the TIMUNLOCK to write into the TMR reg  
 
-    DDR->SDTIMR =0x3C934B51;		//Program SDRAM Timing Control Register1
-	DDR->SDTIMR2 =0x4221C72;		//Program SDRAM Timing Control Register2
+
+	tRFC = DDR_Get_Val(DDR_T_RFC, DDR_FREQ);
+    tRP  = DDR_Get_Val(DDR_T_RP, DDR_FREQ);
+    tRCD = DDR_Get_Val(DDR_T_RCD, DDR_FREQ);
+    tWR  = DDR_Get_Val(DDR_T_WR, DDR_FREQ);
+    tRAS = DDR_Get_Val(DDR_T_RAS, DDR_FREQ);
+    tRC  = DDR_Get_Val(DDR_T_RC, DDR_FREQ);
+    tRRD = DDR_Get_Val(DDR_T_RRD, DDR_FREQ);
+    tWTR = DDR_Get_Val(DDR_T_WTR, DDR_FREQ);
+
+   DDR->SDTIMR =    tRFC << 25	|              
+                    tRP  << 22	|
+                    tRCD << 19	|
+                    tWR  << 16	|
+                    tRAS << 11	|
+                    tRC  << 6	|
+                    tRRD << 3	|
+                    tWTR << 0;
+
+    DDR->SDTIMR2 =  ((DDR_T_RASMAX / (DDR_RR * DDR_FREQ)) << 27) |
+                    (DDR_T_XP << 25 )    |
+                    (((DDR_T_XSNR * DDR_FREQ) / 10000) << 16)   |
+                    (DDR_T_XSRD << 8)    |
+                    (((DDR_T_RTP * DDR_FREQ) / 10000) << 5)  |   
+                     (DDR_T_CKE << 0);
+      
+	DDR->SDBCR = 0x534832; //0x534832; Reset the TIMUNLOCK TMR Write Disable
 
 	DDR->PBBPR = 0x000000FE;
-		
-	DDR->SDBCR = 0x08534832;		//Program SDRAM Bank Config Register
+	
+	DDR->SDBCR = 0xD34A32;	 //Enable DDR2 and DDR and SDram. Write '1' to BOOTUNLOCK
 
-	DDR->SDRCR = 0x00000768;		//Program SDRAM Refresh Control Register
+	DDR->SDBCR = 0x534A32;	//Enable DDR2 and DDR and SDram. Write '0' to BOOTUNLOCK
+
+	DDR->SDRCR = (DDR_RR * DDR_FREQ) / 10; //Program SDRAM Refresh Control Registers
+
 
   DEVICE_LPSCTransition(LPSC_DDR2,0,PSC_SYNCRESET);
   DEVICE_LPSCTransition(LPSC_DDR2,0,PSC_ENABLE);
@@ -441,27 +775,6 @@ Uint32 DEVICE_DDR2Init()
 
 Uint32 DEVICE_EMIFInit()
 {
-#if 0
-  Uint32 currCE = 0;
-  Uint32 width;
-  VUint32 *ABCR = NULL;
-
-  // Set width to 8 or 16
-  width = (DEVICE_emifBusWidth() == DEVICE_BUSWIDTH_8BIT)? 0 : 1;
-
-  // Set PINMUX for EMIF use
-  DEVICE_pinmuxControl(2,DEVICE_PINMUX_EMIF_MASK,DEVICE_PINMUX_EMIF_EN);
-
-  // FIXME
-  AEMIF->AWCCR &= ( ~(DEVICE_EMIF_AWCC_WAITSTATE_MASK) | 0xFF );
-
-  ABCR = &(AEMIF->AB1CR);
-
-  while (currCE < DEVICE_EMIF_NUMBER_CE_REGION)
-  {
-    ABCR[currCE++] = 0x3FFFFFFC | width;      // Adjust for quicker access times   
-  }
-#endif
 
   AEMIF->AWCCR = 0xff;
   
@@ -477,76 +790,6 @@ Uint32 DEVICE_EMIFInit()
  
 Uint32 DEVICE_UART0Init()
 {
- #if 0
-  Uint16 divider;
-
-  // Reset and then power on the UART0 via PSC
-  DEVICE_LPSCTransition(LPSC_UART0,PD0,PSC_SYNCRESET);
-  DEVICE_LPSCTransition(LPSC_UART0,PD0,PSC_ENABLE);
-
-  // Put UART in reset
-  UART0->PWREMU_MGNT = 0;
-  UTIL_waitLoop(10000);
-
-  // Set free running
-  UART0->PWREMU_MGNT = 0x0001;
-
-  // Set DLAB bit - allows setting of clock divisors
-  UART0->LCR |= 0x80;
-  UTIL_waitLoop(100);
-
-  //divider = 24000000/(16*115200) = 13.02 => 13 = 0x0D => 24000000/(16*13) = 115384 (0.16% error)
-  //divider = DEVICE_OSC_FREQ / (DEVICE_UART0_DESIRED_BAUD * DEVICE_UART0_OVERSAMPLE_CNT);
-  //dividerX2 = (2*DEVICE_OSC_FREQ) / (DEVICE_UART0_DESIRED_BAUD * DEVICE_UART0_OVERSAMPLE_CNT);
-  //if (divider*2 < dividerX2) divider++;
-  divider = 0x0D;
-
-  UART0->DLL = divider & 0xFF;
-  UART0->DLH = (divider >> 8) & 0xFF;
-
-  // Enable, clear and reset FIFOs
-  UART0->FCR = 0x0;
-  UTIL_waitLoop(100);
-
-  UART0->FCR = 0xC1;
-  UTIL_waitLoop(100);
-
-  // Disable autoflow control                                                  
-  UART0->MCR = 0x00;
-  UTIL_waitLoop(100); 
-
-  // Set word length to 8 bits, no parity, one stop bit, clear DLAB bit                                 
-  UART0->LCR = 0x03;
-  UTIL_waitLoop(100); 
-
-  // Enable interrupts                                                         
-  UART0->IER = 0x07;
-  UTIL_waitLoop(100); 
-
-  // Set to run free
-  UART0->PWREMU_MGNT |= 0x6001;
-  UTIL_waitLoop(100); 
-
-  if ( (UART0->IIR & 0xC0) != 0xC0 )
-    return E_FAIL;
-                                                                               
-  UTIL_waitLoop(100);
-
-  // Disable the timer 
-  TIMER0->TCR = 0x00000000;
-  
-  // Set to 64-bit GP Timer mode, enable TIMER12 & TIMER34
-  TIMER0->TGCR = 0x00000003;
-
-  // Reset timers to zero 
-  TIMER0->TIM34 = 0x00000000;
-  TIMER0->TIM12 = 0x00000000;
-
-  // Set timer period (5 second timeout = (24000000 * 5) cycles = 0x080BEFC0) 
-  TIMER0->PRD34 = 0x00000000;
-  TIMER0->PRD12 = 0x07270E00;
-#endif
-
   UART0->PWREMU_MGNT = 0;         // Reset UART TX & RX components
 
   UTIL_waitLoop( 100 );
@@ -574,75 +817,8 @@ Uint32 DEVICE_UART0Init()
   return E_PASS;
 }
 
-
-Uint32 DEVICE_SPIInit(Uint8 periphNum)
-{
-  if ( periphNum == 0)
-  {
-    // Make sure SPI0 is powered up
-    DEVICE_LPSCTransition(LPSC_SPI0, PD0, PSC_ENABLE);
-    // Set the PINMUX3 for enabling SPI0     
-    DEVICE_pinmuxControl(3, 0xFF000000, 0x36000000);
-  }
-  else
-  {
-    return E_FAIL;
-  }
-  
-  return E_PASS;
-}
-
-
 Uint32 DEVICE_I2C0Init()
 {
- #if 0
-  Uint32 iCLK = 0;
-  Uint32 iPSC = 2;
-  Uint32 D = 5;
-         
-  // Enable the Xmt, Master Mode, free running, 7-bit address, 8-bit words, no DLB
-  I2C0->ICMDR =  I2C_ICMDR_MST |       // Set MST - Master mode
-                 I2C_ICMDR_TRX |       // Set TRX - Transmitter
-                 I2C_ICMDR_FRE;
-  UTIL_waitLoop(1000);
-
-  // Set the DM648 address
-  I2C0->ICOAR = DEVICE_I2C_OWN_ADDRESS & 0xFF;
-
-  // Set Default I2C High and Low Clock Hold
-  // Set prescalar to 2 (Scaled clock = input clk / PSC+1)
-  // Input clock is 24MHz
-  // Scaled clock will be 8MHz
-  I2C0->ICPSC = (Uint32)(0xFF & iPSC);
-  //iCLK = (24000000)/((2+1)*DEVICE_I2C_TARGET_FREQ*2) - D;
-  iCLK = 20-D;
-  I2C0->ICCLKH = (Uint32)(0xFF & iCLK);
-  I2C0->ICCLKL = (Uint32)(0xFF & iCLK);
-
-  // Enable the Xmt, Master Mode, free running, 7-bit address, 8-bit words, no DLB
-  I2C0->ICMDR =  I2C_ICMDR_MST |       // Set MST - Master mode
-                 I2C_ICMDR_TRX |       // Set TRX - Transmitter
-                 I2C_ICMDR_FRE;
-
-  // Set backward compatibility mode
-  I2C0->ICEMDR = I2C_ICEMDR_EXTMODE;
-
-  I2C0->ICIMR = 0;
-
-  // Read and clear interrupt status register
-  I2C0->ICSTR |= 0x0000703F;
-
-  // Read ICIVR until clear
-  while ((I2C0->ICIVR & 0x7) != 0x0);
-                  
-  // Take I2C Out of Reset
-  I2C0->ICMDR =  I2C_ICMDR_MST |       // Set MST - Master mode
-                 I2C_ICMDR_TRX |       // Set TRX - Transmitter
-                 I2C_ICMDR_FRE |       // Set free running
-                 I2C_ICMDR_IRS;
-  UTIL_waitLoop(1000);
-#endif
-
   I2C0->ICMDR   = 0;                // Reset I2C
   I2C0->ICPSC   = 26;               // Config prescaler for 27MHz
   I2C0->ICCLKL  = 20;               // Config clk LOW for 20kHz
@@ -691,7 +867,7 @@ Uint32 DEVICE_TIMER0Init()
 
   return E_PASS;
 }
-
+//interrupt for Timer0 in DM35x and DM36x is the same
 void DEVICE_TIMER0Start(void)
 {
   // Clear interrupt

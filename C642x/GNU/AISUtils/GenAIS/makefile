@@ -9,7 +9,8 @@ DEVSTRING:=C642x
 MONOCOMPILE=gmcs
 DOTNETCOMPILE=csc
 LOCALSOURCES=$(PROGRAM).cs
-REMOTESOURCES=device_name.cs AISGen_$(DEVSTRING).cs CRC32.cs Endian.cs EmbeddedFileIO.cs ini.cs HexConv.cs Debug.cs COFF.cs AISGen.cs
+REMOTESOURCES=device_name.cs AISGen_$(DEVSTRING).cs CRC32.cs Endian.cs EmbeddedFileIO.cs Debug.cs COFF.cs AISGen.cs
+
 
 OBJECTS:=$(patsubst %.cs,%.module,$(REMOTESOURCES))
 EXECUTABLE:=../$(PROGRAM)_$(DEVSTRING).exe
@@ -20,6 +21,7 @@ UTILLIBPATH:=$(COMMONPATH)/UtilLib
 AISGENLIBPATH:=$(COMMONPATH)/AISGenLib
 
 DEVCOMMONPATH:=../../../Common
+
 GNUCOMMONPATH:=../../Common
 DEVAISGENLIBPATH:=$(GNUCOMMONPATH)/AISGenLib
 

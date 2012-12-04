@@ -23,7 +23,7 @@ extern far "c" {
 #define SFT_VERSION_STRING  ("1.50")
 
 // Define MagicNumber constants
-#ifdef DM35X_STANDARD
+#ifdef DM35X_REVC
 #define MAGIC_NUMBER_VALID          (0xA1BCED00)
 #else
 #define MAGIC_NUMBER_VALID          (0xA1ACED00)
@@ -36,16 +36,6 @@ extern far "c" {
 #define UBL_NAND_BURN               (0xA1ACED33)		/* Download via UART & Burn NAND - Image is binary */
 #define UBL_NAND_ERASE              (0xA1ACED44)		/* Download via UART & Global erase the NAND Flash*/
 
-#ifdef DM35X_STANDARD
-// Used by DM35x RBL when doing NAND boot
-#define UBL_MAGIC_SAFE              (0xA1BCED00)		/* Safe boot mode */
-#define UBL_MAGIC_DMA               (0xA1BCED11)		/* DMA boot mode */
-#define UBL_MAGIC_IC                (0xA1BCED22)		/* I Cache boot mode */
-#define UBL_MAGIC_FAST              (0xA1BCED33)		/* Fast EMIF boot mode */
-#define UBL_MAGIC_DMA_IC            (0xA1BCED44)		/* DMA + ICache boot mode */
-#define UBL_MAGIC_DMA_IC_FAST       (0xA1BCED55)		/* DMA + ICache + Fast EMIF boot mode */
-#define UBL_MAGIC_BIN_IMG           (0xA1BCED66)		/* Execute in place supported*/
-#else
 // Used by RBL when doing NAND boot
 #define UBL_MAGIC_SAFE              (0xA1ACED00)		/* Safe boot mode */
 #define UBL_MAGIC_DMA               (0xA1ACED11)		/* DMA boot mode */
@@ -53,8 +43,18 @@ extern far "c" {
 #define UBL_MAGIC_FAST              (0xA1ACED33)		/* Fast EMIF boot mode */
 #define UBL_MAGIC_DMA_IC            (0xA1ACED44)		/* DMA + ICache boot mode */
 #define UBL_MAGIC_DMA_IC_FAST       (0xA1ACED55)		/* DMA + ICache + Fast EMIF boot mode */
+
+// Used by DM35x RBL when doing NAND boot
+#define UBL_DM35X_MAGIC_SAFE              (0xA1BCED00)		/* Safe boot mode */
+#define UBL_DM35X_MAGIC_DMA               (0xA1BCED11)		/* DMA boot mode */
+#define UBL_DM35X_MAGIC_IC                (0xA1BCED22)		/* I Cache boot mode */
+#define UBL_DM35X_MAGIC_FAST              (0xA1BCED33)		/* Fast EMIF boot mode */
+#define UBL_DM35X_MAGIC_DMA_IC            (0xA1BCED44)		/* DMA + ICache boot mode */
+#define UBL_DM35X_MAGIC_DMA_IC_FAST       (0xA1BCED55)		/* DMA + ICache + Fast EMIF boot mode */
+
+// Used by UBL when doing UART boot, UBL Nor Boot, or NAND boot
 #define UBL_MAGIC_BIN_IMG           (0xA1ACED66)		/* Execute in place supported*/
-#endif
+#define UBL_DM35X_MAGIC_BIN_IMG     (0xA1BCED66)		/* Execute in place supported*/
 
 // Used by UBL when doing UART boot
 #define UBL_MAGIC_BIN_IMG           (0xA1ACED66)		/* Execute in place supported*/

@@ -1,8 +1,0 @@
---abi=eabi -z -cr -m"./Debug/NANDWriter.map" -o"./Debug/NANDWriter_DM35x_STANDARD.out" -w -x -i"C:/Program Files/TMS470 Code Generation Tools 4.5.0/lib"
-"C:\cat-git\trunk\DM35x_Rev_C\CCS\NANDWriter\Debug\debug.obj"
-"C:\cat-git\trunk\DM35x_Rev_C\CCS\NANDWriter\Debug\device.obj"
-"C:\cat-git\trunk\DM35x_Rev_C\CCS\NANDWriter\Debug\device_nand.obj"
-"C:\cat-git\trunk\DM35x_Rev_C\CCS\NANDWriter\Debug\nand.obj"
-"C:\cat-git\trunk\DM35x_Rev_C\CCS\NANDWriter\Debug\nandwriter.obj"
-"C:\cat-git\trunk\DM35x_Rev_C\CCS\NANDWriter\Debug\util.obj"
-"C:\cat-git\trunk\DM35x_Rev_C\CCS\NANDWriter\NANDWriter.cmd"
