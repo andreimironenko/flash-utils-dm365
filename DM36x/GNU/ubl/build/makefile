@@ -63,7 +63,7 @@ ifeq ($(CLOCKS),ARM432_DDR340_OSC24)
 endif
 
 
-OBJECTS:=$(patsubst %.c,%_$(TYPE).o,$(SOURCES))
+OBJECTS:=$(patsubst %.c,%_$(TYPE)_$(CLOCKS).o,$(SOURCES))
 EXECUTABLE:=$(PROGRAM)_$(DEVSTRING)_$(TYPE)_$(CLOCKS)
 BINARY:=../$(EXECUTABLE).bin
 LINKERSCRIPT=../$(PROGRAM).lds
@@ -86,7 +86,7 @@ $(BINARY): $(EXECUTABLE)
 $(EXECUTABLE): $(OBJECTS) $(LINKERSCRIPT)
 		$(CC) $(LDFLAGS) $(OBJECTS) -o $@
 		
-%_$(TYPE).o : %.c
+%_$(TYPE)_$(CLOCKS).o : %.c
 		$(CC) $(CFLAGS) $< -o $@      
         
 # Search paths for code and header files
