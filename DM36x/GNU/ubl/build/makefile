@@ -13,7 +13,6 @@ include ../../device.mak
 PROGRAM:=ubl
 
 #CROSSCOMPILE=arm-none-linux-gnueabi-
-CROSSCOMPILE=$(CROSS_COMPILE)
 CC=$(CROSSCOMPILE)gcc
 OBJCOPY=$(CROSSCOMPILE)objcopy
 OBJDUMP=$(CROSSCOMPILE)objdump
