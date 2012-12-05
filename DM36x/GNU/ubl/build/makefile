@@ -33,7 +33,7 @@ ifeq ($(TYPE),nor)
   SOURCES+= nor.c norboot.c 
 endif
 ifeq ($(TYPE),sdmmc)
-	CFLAGS+= -DUBL_SDMMC
+	CFLAGS+= -DUBL_SD_MMC
   SOURCES+= sdmmc.c sdmmcboot.c
 endif
 
