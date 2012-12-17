@@ -113,28 +113,28 @@ static const Uint16 DDR_RR = 78;
 
 #define PLL1_MUL		0x9  
 #define PLL1_PREDIV		0x0
-#define PLL1_POSTDIV		0x0 	//PLL1 output ( 0x9 * 2* 24 = 432 MHZ )
+#define PLL1_POSTDIV	0x0 	//PLL1 output ( 0x9 * 2* 24 = 432 MHZ )
 
-#define PLL1_DIV1		0x11	// POST DIV 432/18 ->24 mhz
-#define PLL1_DIV2		0x1	// POST DIV 432/2  -> HDVICP max =216 MHZ
-#define PLL1_DIV3		0x1	// POST DIV 432/2  -> MJCP/HDVICP
-#define PLL1_DIV4		0x3	// POST DIV 432/4  -> EDMA/EDMA CFG
-#define PLL1_DIV5		0x1	// POST DIV 432/2 -> VPSS
-#define PLL1_DIV6		0x5	// POST DIV 432/(5+1) 72  -> VENC	
-#define PLL1_DIV7		0x0	// POST DIV 432 -> DDR
-#define PLL1_DIV8		0x04	// POST DIV 432/5 ->  86 MMC0/SD0
-#define PLL1_DIV9		0x1	// POST DIV 432/2 -> CLKOUT
+#define PLL1_DIV1		0x11 // POST DIV 432/18 ->24 mhz
+#define PLL1_DIV2		0x1	 // POST DIV 432/2  -> HDVICP max =216 MHZ
+#define PLL1_DIV3		0x1	 // POST DIV 432/2  -> MJCP/HDVICP
+#define PLL1_DIV4		0x3	 // POST DIV 432/4  -> EDMA/EDMA CFG
+#define PLL1_DIV5		0x1	 // POST DIV 432/2 -> VPSS
+#define PLL1_DIV6		0x5	 // POST DIV 432/(5+1) 72  -> VENC
+#define PLL1_DIV7		0x0	 // POST DIV 432 -> DDR
+//#define PLL1_DIV8		0x04 // POST DIV 432/5 ->  86 MMC0/SD0
+#define PLL1_DIV8		0x03 // POST DIV 432/5 ->  86 MMC0/SD0
+#define PLL1_DIV9		0x1	 // POST DIV 432/2 -> CLKOUT
 
 #define PLL2_MUL		0x2D
 #define PLL2_PREDIV		0x7
-#define PLL2_POSTDIV		0x0 	//PLL2 Output (0x2D * 2 * 24 / (0x7 + 1) = 270 MHZ
+#define PLL2_POSTDIV	0x0 	//PLL2 Output (0x2D * 2 * 24 / (0x7 + 1) = 270 MHZ
 
-
-#define PLL2_DIV1		0xA	// USB 24.5  MHZ
-#define PLL2_DIV2		0x0  	// 270 =270 Mhz -> ARM 
-#define PLL2_DIV3		0x0	// 270 2* DDR
-#define PLL2_DIV4		0x05 	// POST DIV 270/6  -> VOICE
-#define PLL2_DIV5		0x09 	// POST DIV 270/10 = 27 MHZ ->VIDEO HD
+#define PLL2_DIV1		0x0A // USB 24.5  MHZ
+#define PLL2_DIV2		0x00 // 270 =270 Mhz -> ARM
+#define PLL2_DIV3		0x00 // 270 2* DDR
+#define PLL2_DIV4		0x05 // POST DIV 270/6  -> VOICE
+#define PLL2_DIV5		0x09 // POST DIV 270/10 = 27 MHZ ->VIDEO HD
 
 #define PERIPHERAL_CLK_CTRL_VAL	0x243F04FC
 
